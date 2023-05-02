@@ -1,0 +1,5 @@
+package com.cts.interim.entities.commons;
+
+public enum PlaceType {
+	Hotel, Park, Mall
+}

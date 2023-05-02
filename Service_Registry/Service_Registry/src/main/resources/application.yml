@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: EUREKA_SERVER
+  profiles:
+    active: dev
+
+eureka:
+  client:
+    fetch-registry: false
+    register-with-eureka: false
+
+logging:
+  level:
+    web: error

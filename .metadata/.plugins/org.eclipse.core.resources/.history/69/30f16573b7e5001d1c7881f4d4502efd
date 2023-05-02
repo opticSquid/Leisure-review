@@ -1,0 +1,5 @@
+package com.cts.interim_project.Service_Providers;
+
+public enum PlaceType {
+	Hotel, Park, Mall
+}

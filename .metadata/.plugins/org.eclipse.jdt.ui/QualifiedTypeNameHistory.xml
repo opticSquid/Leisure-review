@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<qualifiedTypeNameHistroy>
+    <fullyQualifiedTypeName name="java.util.Collections"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.GetMapping"/>
+    <fullyQualifiedTypeName name="org.springframework.web.bind.annotation.RestController"/>
+    <fullyQualifiedTypeName name="com.cts.interim_project.Service_Providers.services.ServiceProviderService"/>
+    <fullyQualifiedTypeName name="org.springframework.boot.configurationprocessor.json.JSONObject"/>
+    <fullyQualifiedTypeName name="com.cts.interim_project.Service_Providers.repository.HotelRepo"/>
+    <fullyQualifiedTypeName name="org.springframework.beans.factory.annotation.Autowired"/>
+    <fullyQualifiedTypeName name="com.cts.interim_project.Service_Providers.entities.commons.ServiceProviders"/>
+    <fullyQualifiedTypeName name="com.cts.interim_project.Service_Providers.entities.commons.PlaceType"/>
+    <fullyQualifiedTypeName name="com.cts.interim_project.Service_Providers.entities.Hotel"/>
+    <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.JsonNode"/>
+    <fullyQualifiedTypeName name="java.util.Arrays"/>
+    <fullyQualifiedTypeName name="java.util.HashSet"/>
+    <fullyQualifiedTypeName name="com.fasterxml.jackson.databind.ObjectMapper"/>
+    <fullyQualifiedTypeName name="aj.org.objectweb.asm.TypeReference"/>
+    <fullyQualifiedTypeName name="com.fasterxml.jackson.core.type.TypeReference"/>
+    <fullyQualifiedTypeName name="java.lang.Exception"/>
+    <fullyQualifiedTypeName name="lombok.extern.slf4j.Slf4j"/>
+</qualifiedTypeNameHistroy>
