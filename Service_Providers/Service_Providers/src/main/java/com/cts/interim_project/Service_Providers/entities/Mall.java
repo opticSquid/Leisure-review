@@ -1,6 +1,7 @@
 package com.cts.interim_project.Service_Providers.entities;
 
 import com.cts.interim_project.Service_Providers.entities.commons.ServiceProviders;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -23,13 +24,12 @@ public class Mall extends ServiceProviders {
 	private Integer numberOfParkingSpaces;
 	private Integer numberofRestaurants;
 
-	public Mall(String placeName, String address, String description, String ownerId, Integer numberOfShops,
-			Double floorArea, Integer numberOfParkingSpaces, Integer numberofRestaurants) {
+	public Mall(String placeName, String address, String description, String ownerId, JsonNode details) {
 		super(placeName, address, description, ownerId);
-		this.numberOfShops = numberOfShops;
-		this.floorArea = floorArea;
-		this.numberOfParkingSpaces = numberOfParkingSpaces;
-		this.numberofRestaurants = numberofRestaurants;
+		this.numberOfShops = details.get("numberOfShops").asInt();
+		this.floorArea = details.get("floorArea").asDouble();
+		this.numberOfParkingSpaces = details.get("numberOfParkingSpaces").asInt();
+		this.numberofRestaurants = details.get("numberofRestaurants").asInt();
 	}
 
 }
