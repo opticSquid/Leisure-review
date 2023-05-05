@@ -1,16 +1,16 @@
 package com.cts.interim_project.Service_Providers.services;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.cts.interim_project.Service_Providers.Exceptions.ProviderNotFoundException;
 import com.cts.interim_project.Service_Providers.entities.Hotel;
 import com.cts.interim_project.Service_Providers.entities.Mall;
 import com.cts.interim_project.Service_Providers.entities.Park;
 import com.cts.interim_project.Service_Providers.entities.commons.PlaceType;
 import com.cts.interim_project.Service_Providers.entities.commons.ServiceProviders;
-import com.cts.interim_project.Service_Providers.repository.HotelRepo;
-import com.cts.interim_project.Service_Providers.repository.MallRepo;
-import com.cts.interim_project.Service_Providers.repository.ParkRepo;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -18,44 +18,68 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class ServiceProviderService {
 	@Autowired
-	private HotelRepo hotelRepo;
+	private HotelService hotelService;
 	@Autowired
-	private ParkRepo parkRepo;
+	private ParkService parkService;
 	@Autowired
-	private MallRepo mallRepo;
+	private MallService mallService;
 
 	public String addServiceProvider(ServiceProviders serviceProviders) {
 		if (serviceProviders.getPlaceType() == PlaceType.Hotel) {
-			Hotel newHotel = new Hotel(serviceProviders.getPlaceName(), serviceProviders.getAddress(),
-					serviceProviders.getDescription(), serviceProviders.getOwnerId(), serviceProviders.getDetails());
-			log.error("New hotel to be saved: {}", newHotel);
-			try {
-				Hotel savedHotel = hotelRepo.save(newHotel);
-				return savedHotel.getId();
-			} catch (Exception e) {
-				log.error("Can not save new Hotel, \n{}", e);
-			}
+			return hotelService.addHotel(serviceProviders);
 		} else if (serviceProviders.getPlaceType() == PlaceType.Park) {
-			Park newPark = new Park(serviceProviders.getPlaceName(), serviceProviders.getAddress(),
-					serviceProviders.getDescription(), serviceProviders.getOwnerId(), serviceProviders.getDetails());
-			try {
-				Park savedPark = parkRepo.save(newPark);
-				return savedPark.getId();
-			} catch (Exception e) {
-				log.error("Can not save new Park, \n{}", e);
-			}
+			return parkService.addPark(serviceProviders);
 		} else if (serviceProviders.getPlaceType() == PlaceType.Mall) {
-			Mall newMall = new Mall(serviceProviders.getPlaceName(), serviceProviders.getAddress(),
-					serviceProviders.getDescription(), serviceProviders.getOwnerId(), serviceProviders.getDetails());
-			try {
-				Mall savedMall = mallRepo.save(newMall);
-				return savedMall.getId();
-			} catch (Exception e) {
-				log.error("Can not save new Mall, \n{}", e);
-			}
+			return mallService.addMall(serviceProviders);
 		} else {
 			return null;
 		}
-		return null;
+	}
+
+	public List<Hotel> getAllHotels() {
+		return hotelService.getAllHotels();
+	}
+
+	public List<Park> getAllParks() {
+		return parkService.getAllParks();
+	}
+
+	public List<Mall> getAllMalls() {
+		return mallService.getAllMalls();
+	}
+
+	public Hotel getHotelById(String id) {
+		return hotelService.getSingleHotel(id);
+	}
+
+	public Park getParkById(String id) {
+		return parkService.getSinglePark(id);
+	}
+
+	public Mall getMallById(String id) {
+		return mallService.getSingleMall(id);
+	}
+
+	public String updateServiceProvider(ServiceProviders serviceProviders)throws ProviderNotFoundException {
+		if (serviceProviders.getPlaceType() == PlaceType.Hotel) {
+			return hotelService.updateHotel(serviceProviders);
+		} else if (serviceProviders.getPlaceType() == PlaceType.Park) {
+			return parkService.updatePark(serviceProviders);
+		} else if (serviceProviders.getPlaceType() == PlaceType.Mall) {
+			return mallService.updateMall(serviceProviders);
+		} else {
+			return null;
+		}
+	}
+
+	public void deleteServiceProvider(PlaceType type, String id) {
+		log.error("In service: type: {}, id: {}", type, id);
+		if (type == PlaceType.Hotel) {
+			hotelService.deleteHotel(id);
+		} else if (type == PlaceType.Park) {
+			parkService.deletePark(id);
+		} else {
+			mallService.deleteMall(id);
+		}
 	}
 }

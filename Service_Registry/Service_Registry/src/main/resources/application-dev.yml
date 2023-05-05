@@ -3,6 +3,3 @@ logging:
     web: debug
 server:
   port: 8761
-#eureka:
-#  instance:
-#    hostname: LTIN179146.cts.com

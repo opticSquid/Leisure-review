@@ -9,17 +9,14 @@ spring:
         - id: usersModule
           uri: lb://USERS
           predicates:
-#            - Host=LTIN179146.cts.com
             - Path=/users/**
         - id: serviceProvidersModule
           uri: lb://PROVIDERS
           predicates:
-#            - Host=LTIN179146.cts.com
             - Path=/providers/**
         - id: reviewAndStreaks
           uri: lb://REVIEWSTREAKS
           predicates:
-#            - Host=LTIN179146.cts.com
             - Path=/review-streaks/**
 logging:
   level:

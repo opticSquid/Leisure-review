@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.hibernate.annotations.BatchSize;
 
-import com.cts.interim_project.Service_Providers.entities.commons.ServiceProviders;
+import com.cts.interim_project.Service_Providers.entities.commons.PlaceType;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -25,15 +25,19 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 
 @Getter
 @Setter
 @Entity
-public class Hotel extends ServiceProviders {
+public class Hotel {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private String id;
+	protected String placeName;
+	protected String address;
+	protected String description;
+	protected String ownerId;
+	private PlaceType placeType;
 	private Integer numberOfRooms;
 	private Set<String> roomCategories;
 	@ElementCollection(fetch = FetchType.LAZY)
@@ -46,8 +50,16 @@ public class Hotel extends ServiceProviders {
 	private String offDays;
 	private List<String> otherServices;
 
+	public Hotel() {
+		super();
+	}
+
 	public Hotel(String placeName, String address, String description, String ownerId, JsonNode details) {
-		super(placeName, address, description, ownerId);
+		this.placeName = placeName;
+		this.address = address;
+		this.description = description;
+		this.ownerId = ownerId;
+		this.placeType = PlaceType.Hotel;
 		this.numberOfRooms = details.get("numberOfRooms").asInt();
 		String roomCategories = details.get("roomCategories").asText();
 		String[] strParts = roomCategories.split(",");
@@ -62,12 +74,28 @@ public class Hotel extends ServiceProviders {
 		});
 	}
 
+	public Hotel(String placeName, String address, String description, String ownerId, Integer numberOfRooms,
+			Set<String> roomCategories, Map<String, Double> pricings, Boolean isVegAvailable, String offDays,
+			List<String> otherServices) {
+		super();
+		this.placeName = placeName;
+		this.address = address;
+		this.description = description;
+		this.ownerId = ownerId;
+		this.placeType = PlaceType.Hotel;
+		this.numberOfRooms = numberOfRooms;
+		this.roomCategories = roomCategories;
+		this.pricings = pricings;
+		this.isVegAvailable = isVegAvailable;
+		this.offDays = offDays;
+		this.otherServices = otherServices;
+	}
+
 	@Override
 	public String toString() {
-		return "Hotel [id=" + id + ", numberOfRooms=" + numberOfRooms + ", roomCategories=" + roomCategories
-				+ ", pricings=" + pricings + ", isVegAvailable=" + isVegAvailable + ", offDays=" + offDays
-				+ ", otherServices=" + otherServices + ", placeName=" + placeName + ", address=" + address
-				+ ", description=" + description + ", ownerId=" + ownerId + "]";
+		return "Hotel [numberOfRooms=" + numberOfRooms + ", roomCategories=" + roomCategories + ", pricings=" + pricings
+				+ ", isVegAvailable=" + isVegAvailable + ", offDays=" + offDays + ", otherServices=" + otherServices
+				+ ", placeName=" + placeName + ", address=" + address + ", description=" + description + ", ownerId="
+				+ ownerId + "]";
 	}
-	
 }

@@ -8,7 +8,7 @@ import java.util.Set;
 
 import org.hibernate.annotations.BatchSize;
 
-import com.cts.interim_project.Service_Providers.entities.commons.ServiceProviders;
+import com.cts.interim_project.Service_Providers.entities.commons.PlaceType;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -31,10 +31,15 @@ import lombok.ToString;
 @Setter
 @ToString
 @Entity
-public class Park extends ServiceProviders {
+public class Park {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private String id;
+	protected String placeName;
+	protected String address;
+	protected String description;
+	protected String ownerId;
+	private PlaceType placeType;
 	private Boolean isChildrensPark;
 	private Set<String> rides;
 	private Boolean isWaterparkAvailable;
@@ -55,7 +60,11 @@ public class Park extends ServiceProviders {
 	private String otherDetails;
 
 	public Park(String placeName, String address, String description, String ownerId, JsonNode details) {
-		super(placeName, address, description, ownerId);
+		this.placeName = placeName;
+		this.address = address;
+		this.description = description;
+		this.ownerId = ownerId;
+		this.placeType = PlaceType.Park;
 		this.isChildrensPark = details.get("isChildrensPark").asBoolean();
 		String rides = details.get("rides").asText();
 		String[] strParts = rides.split(",");
@@ -73,4 +82,22 @@ public class Park extends ServiceProviders {
 		;
 		this.otherDetails = details.get("otherDetails").asText();
 	}
+
+	public Park(String placeName, String address, String description, String ownerId, Boolean isChildrensPark,
+			Set<String> rides, Boolean isWaterparkAvailable, Map<String, Integer> minimumAgeForRides, Double entryFee,
+			Map<String, Double> ridefeesAndComboPacks, String otherDetails) {
+		this.placeName = placeName;
+		this.address = address;
+		this.description = description;
+		this.ownerId = ownerId;
+		this.placeType = PlaceType.Park;
+		this.isChildrensPark = isChildrensPark;
+		this.rides = rides;
+		this.isWaterparkAvailable = isWaterparkAvailable;
+		this.minimumAgeForRides = minimumAgeForRides;
+		this.entryFee = entryFee;
+		this.ridefeesAndComboPacks = ridefeesAndComboPacks;
+		this.otherDetails = otherDetails;
+	}
+
 }
