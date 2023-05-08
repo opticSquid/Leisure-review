@@ -14,10 +14,10 @@ spring:
           uri: lb://PROVIDERS
           predicates:
             - Path=/providers/**
-        - id: reviewAndStreaks
-          uri: lb://REVIEWSTREAKS
+        - id: reviewMoule
+          uri: lb://REVIEWS
           predicates:
-            - Path=/review-streaks/**
+            - Path=/reviews/**
 logging:
   level:
     web: error

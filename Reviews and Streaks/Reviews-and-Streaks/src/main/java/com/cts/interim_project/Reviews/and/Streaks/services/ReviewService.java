@@ -7,36 +7,47 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.cts.interim_project.Reviews.and.Streaks.Exceptions.ProviderNotFoundException;
-import com.cts.interim_project.Reviews.and.Streaks.entities.PlaceType;
-import com.cts.interim_project.Reviews.and.Streaks.entities.ProviderReview;
-import com.cts.interim_project.Reviews.and.Streaks.repository.ProviderReviewRepo;
+import com.cts.interim_project.Reviews.and.Streaks.entities.Review;
+import com.cts.interim_project.Reviews.and.Streaks.repository.ReviewRepo;
 
 @Service
 public class ReviewService {
 	@Autowired
-	private ProviderReviewRepo reviewRepo;
+	private ReviewRepo reviewRepo;
 
-	public String addReview(ProviderReview review) {
-		ProviderReview savedReview = reviewRepo.save(review);
-		return savedReview.getProviderId();
+	public String addReview(Review review) {
+		Review savedReview = reviewRepo.save(review);
+		return savedReview.getReviewId();
 	}
 
-	public List<ProviderReview> getAllServiceProviders() {
-		return reviewRepo.findAll();
-	}
-
-	public ProviderReview getServiceProviderById(String id) {
-		Optional<ProviderReview> serviceProvider = reviewRepo.findById(id);
-		if (serviceProvider.isEmpty()) {
-			throw new ProviderNotFoundException("service provider with given id is not found");
+	private Review getReviewById(String reviewId) throws ProviderNotFoundException {
+		Optional<Review> review = reviewRepo.findById(reviewId);
+		if (review.isPresent()) {
+			return review.get();
 		} else {
-			return serviceProvider.get();
+			throw new ProviderNotFoundException("service provider with gived id is not found");
 		}
 	}
 
-	public List<ProviderReview> getServiceProvidersByType(PlaceType placeType) {
-		List<ProviderReview> serviceProviders = reviewRepo.findByPlaceType(placeType);
-		return serviceProviders;
+	public List<Review> getAllReviewsOfServiceProvider(String providerId) {
+		return reviewRepo.findAllReviewsOfServiceProvider(providerId);
 	}
 
+	public List<Review> getAllReviewsOfUser(String userId) {
+		return reviewRepo.findAllReviewsOfUser(userId);
+	}
+
+	public String editReview(Review review) {
+		Review existingReview = getReviewById(review.getReviewId());
+		if (existingReview != null) {
+			reviewRepo.save(review);
+			return review.getReviewId();
+		} else {
+			throw new ProviderNotFoundException("service provider with gived id is not found");
+		}
+	}
+
+	public void deleteReview(String reviewId) {
+		reviewRepo.deleteById(reviewId);
+	}
 }

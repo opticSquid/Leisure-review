@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/reviews_streaks
+    url: jdbc:mysql://localhost:3306/reviews?createDatabaseIfNotExist=true
     username: Soumalya
     password: QsCAzX@#$%24680
   jpa:
