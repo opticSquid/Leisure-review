@@ -106,6 +106,11 @@ public class ServiceProvidersController {
 		}
 	}
 
+	@GetMapping("/check/{id}")
+	public Boolean checkForServiceProvider(@PathVariable String id) {
+		return providerService.isServiceProviderValid(id);
+	}
+
 	@PutMapping("/update")
 	public ResponseEntity<String> updateServiceProvider(@RequestBody ServiceProviders serviceProider) {
 		try {

@@ -59,6 +59,10 @@ public class Park {
 	@Column(length = 300)
 	private String otherDetails;
 
+	public Park() {
+		super();
+	}
+
 	public Park(String placeName, String address, String description, String ownerId, JsonNode details) {
 		this.placeName = placeName;
 		this.address = address;

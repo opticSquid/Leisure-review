@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.cts.interim_project.Reviews.and.Streaks.Exceptions.ProviderNotFoundException;
 import com.cts.interim_project.Reviews.and.Streaks.entities.Review;
 import com.cts.interim_project.Reviews.and.Streaks.repository.ReviewRepo;
 import com.cts.interim_project.Reviews.and.Streaks.services.ReviewService;
@@ -32,7 +33,12 @@ public class ReviewController {
 	@PostMapping("/new")
 	public ResponseEntity<String> addReview(@RequestBody Review review) {
 		log.error("Coming review: {}", review);
-		String id = reviewService.addReview(review);
+		String id = null;
+		try {
+			id = reviewService.addReview(review);
+		} catch (ProviderNotFoundException p) {
+			return ResponseEntity.status(HttpStatus.SC_BAD_REQUEST).body(p.getMessage());
+		}
 		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/reviews/{id}").buildAndExpand(id)
 				.toUri();
 		return ResponseEntity.created(location).build();

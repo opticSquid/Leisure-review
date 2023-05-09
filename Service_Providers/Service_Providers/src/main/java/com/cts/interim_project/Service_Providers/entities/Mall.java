@@ -29,6 +29,10 @@ public class Mall {
 	private Integer numberOfParkingSpaces;
 	private Integer numberofRestaurants;
 
+	public Mall() {
+		super();
+	}
+
 	public Mall(String placeName, String address, String description, String ownerId, JsonNode details) {
 		this.placeName = placeName;
 		this.address = address;

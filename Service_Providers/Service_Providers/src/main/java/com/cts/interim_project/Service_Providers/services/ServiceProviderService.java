@@ -60,7 +60,28 @@ public class ServiceProviderService {
 		return mallService.getSingleMall(id);
 	}
 
-	public String updateServiceProvider(ServiceProviders serviceProviders)throws ProviderNotFoundException {
+	public Boolean isServiceProviderValid(String id) {
+		// check if the id is present in either of the tables
+		try {
+			hotelService.getSingleHotel(id);
+			return true;
+		} catch (ProviderNotFoundException p) {
+			try {
+				parkService.getSinglePark(id);
+				return true;
+			} catch (ProviderNotFoundException pnfe) {
+				try {
+					mallService.getSingleMall(id);
+					return true;
+				} catch (ProviderNotFoundException pnf) {
+					return false;
+				}
+			}
+		}
+
+	}
+
+	public String updateServiceProvider(ServiceProviders serviceProviders) throws ProviderNotFoundException {
 		if (serviceProviders.getPlaceType() == PlaceType.Hotel) {
 			return hotelService.updateHotel(serviceProviders);
 		} else if (serviceProviders.getPlaceType() == PlaceType.Park) {

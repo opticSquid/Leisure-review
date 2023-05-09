@@ -4,20 +4,33 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import com.cts.interim_project.Reviews.and.Streaks.Exceptions.ProviderNotFoundException;
 import com.cts.interim_project.Reviews.and.Streaks.entities.Review;
 import com.cts.interim_project.Reviews.and.Streaks.repository.ReviewRepo;
 
+import lombok.extern.slf4j.Slf4j;
+
 @Service
+@Slf4j
 public class ReviewService {
 	@Autowired
 	private ReviewRepo reviewRepo;
+	@Autowired
+	private RestTemplate restTemplate;
 
 	public String addReview(Review review) {
-		Review savedReview = reviewRepo.save(review);
-		return savedReview.getReviewId();
+		ResponseEntity<Boolean> isServiceProviderValid = restTemplate
+				.getForEntity("http://PROVIDERS/providers/check/" + review.getServiceProviderId(), Boolean.class);
+		if (isServiceProviderValid.getBody()) {
+			Review savedReview = reviewRepo.save(review);
+			return savedReview.getReviewId();
+		} else {
+			throw new ProviderNotFoundException("No service provider with given id is found");
+		}
 	}
 
 	private Review getReviewById(String reviewId) throws ProviderNotFoundException {
