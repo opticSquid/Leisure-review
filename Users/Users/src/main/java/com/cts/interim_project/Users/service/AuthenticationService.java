@@ -1,7 +1,5 @@
 package com.cts.interim_project.Users.service;
 
-import java.util.Optional;
-
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -11,6 +9,7 @@ import com.cts.interim_project.Users.config.JwtService;
 import com.cts.interim_project.Users.controller.auth.AuthenticationRequest;
 import com.cts.interim_project.Users.controller.auth.AuthenticationResponse;
 import com.cts.interim_project.Users.controller.auth.RegisterRequest;
+import com.cts.interim_project.Users.controller.auth.ValidateRequest;
 import com.cts.interim_project.Users.entity.Role;
 import com.cts.interim_project.Users.entity.User;
 import com.cts.interim_project.Users.exceptions.UserNotFoundException;
@@ -42,6 +41,10 @@ public class AuthenticationService {
 				.orElseThrow(() -> new UserNotFoundException("user with given email not found"));
 		String jwtToken = jwtService.generateToken(user);
 		return AuthenticationResponse.builder().token(jwtToken).build();
+	}
+
+	public Boolean checkIfValid(ValidateRequest request) {
+		return jwtService.checkIfTokenValid(request.getToken(), request.getEmail());
 	}
 
 }

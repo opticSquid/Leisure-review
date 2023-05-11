@@ -56,6 +56,16 @@ public class JwtService {
 		final String userName = extractUsername(token);
 		return userName.equals(userDetails.getUsername()) && !isTokenExpired(token);
 	}
+	/**
+	 * 
+	 * @param  token JWT token to be validated
+	 * @param email the user email to be validated against
+	 * @return true if token validates false if not
+	 */
+	public Boolean checkIfTokenValid(String token, String email) {
+		final String userName = extractUsername(token);
+		return userName.equals(email) && !isTokenExpired(token);
+	}
 
 	private Boolean isTokenExpired(String token) {
 		// TODO Auto-generated method stub
