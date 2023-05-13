@@ -11,12 +11,14 @@ import com.cts.interim_project.Users.controller.auth.AuthenticationRequest;
 import com.cts.interim_project.Users.controller.auth.AuthenticationResponse;
 import com.cts.interim_project.Users.controller.auth.RegisterRequest;
 import com.cts.interim_project.Users.controller.auth.ValidateRequest;
+import com.cts.interim_project.Users.controller.auth.ValidateResponse;
+import com.cts.interim_project.Users.exceptions.UserNotFoundException;
 import com.cts.interim_project.Users.service.AuthenticationService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/users/api/v1/auth")
+@RequestMapping("/users/auth")
 @RequiredArgsConstructor
 public class AuthenticationController {
 	private final AuthenticationService authService;
@@ -27,16 +29,31 @@ public class AuthenticationController {
 	}
 
 	@PostMapping("/authenticate")
-	public ResponseEntity<AuthenticationResponse> register(@RequestBody AuthenticationRequest request) {
+	public ResponseEntity<AuthenticationResponse> authenticate(@RequestBody AuthenticationRequest request) {
 		return ResponseEntity.ok(authService.authenticate(request));
 	}
 
+	@PostMapping("/change-role")
+	public ResponseEntity<Boolean> changeRole(@RequestBody String userId) {
+		try {
+			Boolean result = authService.changeRoleToBusinessOwner(userId);
+			if (result) {
+				return ResponseEntity.status(HttpStatus.SC_OK).body(result);
+			} else {
+				return ResponseEntity.status(HttpStatus.SC_BAD_REQUEST).body(result);
+			}
+		} catch (UserNotFoundException e) {
+			return ResponseEntity.status(HttpStatus.SC_INTERNAL_SERVER_ERROR).body(false);
+		}
+	}
+
 	@PostMapping("/validate")
-	public ResponseEntity<Boolean> validateJwt(@RequestBody ValidateRequest request) {
-		if (authService.checkIfValid(request)) {
-			return ResponseEntity.ok(true);
+	public ResponseEntity<ValidateResponse> validateJwt(@RequestBody ValidateRequest request) {
+		ValidateResponse user = authService.getUserId(request);
+		if (user.getMessage().equals("jwt expired") || user.getMessage().equals("the given jwt string is not valid")) {
+			return ResponseEntity.status(HttpStatus.SC_BAD_REQUEST).body(user);
 		} else {
-			return ResponseEntity.status(HttpStatus.SC_BAD_REQUEST).body(false);
+			return ResponseEntity.status(HttpStatus.SC_OK).body(user);
 		}
 	}
 }

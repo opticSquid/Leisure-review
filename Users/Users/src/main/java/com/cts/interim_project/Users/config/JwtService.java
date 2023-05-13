@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.cts.interim_project.Users.exceptions.JwtNotValidException;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -56,15 +58,20 @@ public class JwtService {
 		final String userName = extractUsername(token);
 		return userName.equals(userDetails.getUsername()) && !isTokenExpired(token);
 	}
+
 	/**
-	 * 
-	 * @param  token JWT token to be validated
+	 * @param token JWT token to be validated
 	 * @param email the user email to be validated against
-	 * @return true if token validates false if not
+	 * @return true if token validates false if it is expired
+	 * @throws JwtNotValidException when the given jwt does not match with given signature
 	 */
 	public Boolean checkIfTokenValid(String token, String email) {
-		final String userName = extractUsername(token);
-		return userName.equals(email) && !isTokenExpired(token);
+		try {
+			final String userName = extractUsername(token);
+			return userName.equals(email) && !isTokenExpired(token);
+		} catch (Exception e) {
+			throw new JwtNotValidException("the given jwt string is not valid");
+		}
 	}
 
 	private Boolean isTokenExpired(String token) {

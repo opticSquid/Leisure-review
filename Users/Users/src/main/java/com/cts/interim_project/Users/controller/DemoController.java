@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RestController;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/users/api/v1/demo")
+@RequestMapping("/users/demo")
 @RequiredArgsConstructor
 public class DemoController {
 	@GetMapping

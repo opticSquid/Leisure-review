@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -24,10 +25,12 @@ import com.cts.interim_project.Service_Providers.Exceptions.ProviderNotFoundExce
 import com.cts.interim_project.Service_Providers.entities.Hotel;
 import com.cts.interim_project.Service_Providers.entities.Mall;
 import com.cts.interim_project.Service_Providers.entities.Park;
+import com.cts.interim_project.Service_Providers.entities.commons.NewServiceProviderPOJO;
 import com.cts.interim_project.Service_Providers.entities.commons.PlaceType;
 import com.cts.interim_project.Service_Providers.entities.commons.ServiceProviders;
 import com.cts.interim_project.Service_Providers.services.FileUploadUtil;
 import com.cts.interim_project.Service_Providers.services.ServiceProviderService;
+import com.google.common.net.HttpHeaders;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -41,8 +44,9 @@ public class ServiceProvidersController {
 	private FileUploadUtil fileUploadUtil;
 
 	@PostMapping("/new")
-	public ResponseEntity<String> newServiceProvider(@RequestBody ServiceProviders serviceProider) {
-		String serviceProviderId = providerService.addServiceProvider(serviceProider);
+	public ResponseEntity<String> newServiceProvider(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+			@RequestBody NewServiceProviderPOJO newServiceProider) {
+		String serviceProviderId = providerService.addServiceProvider(token, newServiceProider);
 		if (serviceProviderId != null) {
 			URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/providers/{id}")
 					.buildAndExpand(serviceProviderId).toUri();

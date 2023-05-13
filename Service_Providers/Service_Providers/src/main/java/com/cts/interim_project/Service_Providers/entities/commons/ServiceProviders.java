@@ -17,20 +17,26 @@ public class ServiceProviders {
 	private JsonNode details;
 
 	// For create operation
-	public ServiceProviders(String placeName, String address, String description, String ownerId) {
+	public ServiceProviders(String placeName, String address, String description, String ownerId, PlaceType placeType,
+			JsonNode details) {
 		this.placeName = placeName;
 		this.address = address;
 		this.description = description;
 		this.ownerId = ownerId;
+		this.placeType = placeType;
+		this.details = details;
 	}
 
 	// For update operation
-	public ServiceProviders(String id, String placeName, String address, String description, String ownerId) {
+	public ServiceProviders(String id, String placeName, String address, String description, String ownerId,
+			PlaceType placeType, JsonNode details) {
 		this.id = id;
 		this.placeName = placeName;
 		this.address = address;
 		this.description = description;
 		this.ownerId = ownerId;
+		this.placeType = placeType;
+		this.details = details;
 	}
 
 }
