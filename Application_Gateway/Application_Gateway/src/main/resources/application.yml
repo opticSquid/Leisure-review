@@ -18,6 +18,10 @@ spring:
           uri: lb://REVIEWS
           predicates:
             - Path=/reviews/**
+        - id: vendorModule
+          uri: lb://VENDORS
+          predicates:
+            - Path=/vendors/**
 logging:
   level:
     web: error

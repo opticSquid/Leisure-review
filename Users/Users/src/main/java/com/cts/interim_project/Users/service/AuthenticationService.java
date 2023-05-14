@@ -68,7 +68,7 @@ public class AuthenticationService {
 						.orElseThrow(() -> new UserNotFoundException("user with given email not found"));
 				return new ValidateResponse(user.getUserId(), user.getRole(), "user validated");
 			} else {
-				return new ValidateResponse(null, null, "jwt expired");
+				return new ValidateResponse(null, null, "jwt expired or mismatched");
 			}
 		} catch (JwtNotValidException e) {
 			return new ValidateResponse(null, null, e.getMessage());
