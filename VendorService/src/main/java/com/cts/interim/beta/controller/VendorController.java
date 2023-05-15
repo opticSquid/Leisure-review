@@ -5,8 +5,6 @@ import java.net.URI;
 
 import org.apache.hc.core5.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -17,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.cts.interim.beta.entities.ServiceProvider;
-import com.cts.interim.beta.entities.services.FileUploadUtil;
 import com.cts.interim.beta.entities.services.VendorService;
 import com.google.common.net.HttpHeaders;
 
@@ -28,7 +25,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class VendorController {
 	private final VendorService vendorService;
-	private final FileUploadUtil fileUploadUtil;
 
 	private URI UriBuilder(String dynamicPart) {
 		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/vendors/{dynamicPart}")
@@ -46,12 +42,14 @@ public class VendorController {
 		}
 	}
 
-	@PostMapping("/upload/image")
+	@PostMapping("/upload-image")
 	public ResponseEntity<String> newPlaceImage(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
 			@RequestParam("image") MultipartFile image) throws IOException {
-		String fileName = StringUtils.cleanPath(image.getOriginalFilename());
-		String upload_dir = "service-provider-photos/" + providerId;
-		fileUploadUtil.saveFile(upload_dir, fileName, image);
+		try {
+			vendorService.uploadPhoto(token, image);
+		} catch (IOException ex) {
+			throw ex;
+		}
 		return ResponseEntity.status(HttpStatus.SC_ACCEPTED).build();
 	}
 
