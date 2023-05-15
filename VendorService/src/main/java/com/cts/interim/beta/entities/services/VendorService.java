@@ -92,16 +92,28 @@ public class VendorService {
 		}
 	}
 
-	public void uploadPhoto(String token, MultipartFile image) throws IOException {
+	private ServiceProvider findProviderById(String id) {
+		return vendorRepo.findById(id).orElse(null);
+	}
+
+	public void uploadPhoto(String token, String vendorId, MultipartFile image) throws IOException {
 		ResponseEntity<ValidateResponse> validUser = validateUser(token);
-		if (validUser.getBody().getUserId() != null && validUser.getBody().getRole() == Role.SERVICE_OWNER) {
+		ServiceProvider provider = findProviderById(vendorId);
+		if (validUser.getBody().getUserId() != null && validUser.getBody().getRole() == Role.SERVICE_OWNER
+				&& provider != null) {
 			String fileName = StringUtils.cleanPath(image.getOriginalFilename());
 			System.out.println("File name: " + fileName);
-			String upload_dir = "vendor-photos/" + validUser.getBody().getUserId();
+			String upload_dir = "vendor-photos/" + provider.getPlaceType().toString() + "/" + provider.getId();
 			fileUploadUtil.saveFile(upload_dir, fileName, image);
 		} else if (validUser.getBody().getUserId() != null && validUser.getBody().getRole() == Role.USER) {
 			throw new UserOperationNotPermitted(
 					"user does not have the nessecery permission to perform this operation");
+		} else if (validUser.getBody().getUserId() == null) {
+			throw new UserNotValidException("permission denied",
+					new Throwable("the current user identified by the Authorization header token is not valid"));
+		} else if (provider == null) {
+			throw new DataCouldNotbeSavedException("vendor with given id is not found",
+					new Throwable("the vendor id that was provided was not found in the database"));
 		}
 	}
 }

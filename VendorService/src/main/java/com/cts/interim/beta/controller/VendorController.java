@@ -5,6 +5,7 @@ import java.net.URI;
 
 import org.apache.hc.core5.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -42,11 +43,11 @@ public class VendorController {
 		}
 	}
 
-	@PostMapping("/upload-image")
+	@PostMapping("/upload-image/{vendorId}")
 	public ResponseEntity<String> newPlaceImage(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-			@RequestParam("image") MultipartFile image) throws IOException {
+			@PathVariable String vendorId, @RequestParam("image") MultipartFile image) throws IOException {
 		try {
-			vendorService.uploadPhoto(token, image);
+			vendorService.uploadPhoto(token, vendorId, image);
 		} catch (IOException ex) {
 			throw ex;
 		}
