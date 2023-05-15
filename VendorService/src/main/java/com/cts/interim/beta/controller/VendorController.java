@@ -45,7 +45,7 @@ public class VendorController {
 
 	@PostMapping("/upload-image/{vendorId}")
 	public ResponseEntity<String> newPlaceImage(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-			@PathVariable String vendorId, @RequestParam("image") MultipartFile image) throws IOException {
+			@PathVariable String vendorId, @RequestParam("image") MultipartFile image) throws IOException  {
 		try {
 			vendorService.uploadPhoto(token, vendorId, image);
 		} catch (IOException ex) {
