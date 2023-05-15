@@ -1,0 +1,29 @@
+spring:
+  profiles:
+    active: dev
+  application:
+    name: APP_GATEWAY
+  cloud:
+    gateway:
+      routes:
+        - id: usersModule
+          uri: lb://USERS
+          predicates:
+            - Path=/users/**
+        - id: serviceProvidersModule
+          uri: lb://PROVIDERS
+          predicates:
+            - Path=/providers/**
+        - id: reviewMoule
+          uri: lb://REVIEWS
+          predicates:
+            - Path=/reviews/**
+logging:
+  level:
+    web: error
+    '[org.springframework]': trace
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+
