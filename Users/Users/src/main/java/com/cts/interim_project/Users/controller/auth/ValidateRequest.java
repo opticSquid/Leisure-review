@@ -11,5 +11,4 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class ValidateRequest {
 	private String token;
-	private String email;
 }

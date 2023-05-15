@@ -49,7 +49,7 @@ public class AuthenticationController {
 
 	@PostMapping("/validate")
 	public ResponseEntity<ValidateResponse> validateJwt(@RequestBody ValidateRequest request) {
-		ValidateResponse user = authService.getUserId(request);
+		ValidateResponse user = authService.validateUser(request.getToken());
 		if (user.getMessage().equals("jwt expired") || user.getMessage().equals("the given jwt string is not valid")) {
 			return ResponseEntity.status(HttpStatus.SC_BAD_REQUEST).body(user);
 		} else {

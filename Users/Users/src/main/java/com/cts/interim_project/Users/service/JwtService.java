@@ -1,4 +1,4 @@
-package com.cts.interim_project.Users.config;
+package com.cts.interim_project.Users.service;
 
 import java.security.Key;
 import java.util.Date;
@@ -6,20 +6,27 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.cts.interim_project.Users.entity.User;
 import com.cts.interim_project.Users.exceptions.JwtNotValidException;
+import com.cts.interim_project.Users.repository.UserRepo;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
+@Slf4j
 public class JwtService {
+	@Autowired
+	private UserRepo userRepo;
 	@Value("${jwt.secret}")
 	private String secretKey = "";
 
@@ -41,7 +48,7 @@ public class JwtService {
 	public String generateToken(Map<String, Object> extraClaims, UserDetails userDetails) {
 		return Jwts.builder().setClaims(extraClaims).setSubject(userDetails.getUsername())
 				.setIssuedAt(new Date(System.currentTimeMillis()))
-				.setExpiration(new Date(System.currentTimeMillis() + 3600000)) //set to expire in 1 hr
+				.setExpiration(new Date(System.currentTimeMillis() + 3600000)) // set to expire in 1 hr
 				.signWith(getSignInKey(), SignatureAlgorithm.HS256).compact();
 	}
 
@@ -61,14 +68,22 @@ public class JwtService {
 
 	/**
 	 * @param token JWT token to be validated
-	 * @param email the user email to be validated against
-	 * @return true if token validates false if it is expired
-	 * @throws JwtNotValidException when the given jwt does not match with given signature
+	 * @return user email if token validates null if it is expired or damaged
+	 * @throws JwtNotValidException when the given jwt does not match with given
+	 *                              signature
 	 */
-	public Boolean checkIfTokenValid(String token, String email) {
+	public String checkIfTokenValid(String token) {
+		System.out.println("Incoming token: " + token);
 		try {
 			final String userName = extractUsername(token);
-			return userName.equals(email) && !isTokenExpired(token);
+			System.out.println("extracted email: " + userName);
+			User user = userRepo.findByEmail(userName).orElse(null);
+			System.out.println("user found from db: " + user);
+			if (user != null && !isTokenExpired(token)) {
+				return user.getEmail();
+			} else {
+				return null;
+			}
 		} catch (Exception e) {
 			throw new JwtNotValidException("the given jwt string is not valid");
 		}

@@ -5,6 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cts.interim.beta.config.ValidateRequest;
 import com.cts.interim.beta.config.ValidateResponse;
@@ -83,5 +84,10 @@ public class VendorService {
 			throw new UserNotValidException("permission denied", new Throwable(
 					"the current user identified by the Authorization header token is not valid or the user does not have the permission to perform this operation"));
 		}
+	}
+	
+	public void uploadPhoto(String token, MultipartFile image) {
+		ResponseEntity<ValidateResponse> validUser = validateUser(token, vendor.getEmail());
+		ResponseEntity<Boolean> isUserRoleChanged = changeRole(validUser.getBody().getUserId());
 	}
 }

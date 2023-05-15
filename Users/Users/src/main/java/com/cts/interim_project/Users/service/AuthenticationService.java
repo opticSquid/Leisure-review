@@ -5,7 +5,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.cts.interim_project.Users.config.JwtService;
 import com.cts.interim_project.Users.controller.auth.AuthenticationRequest;
 import com.cts.interim_project.Users.controller.auth.AuthenticationResponse;
 import com.cts.interim_project.Users.controller.auth.RegisterRequest;
@@ -59,12 +58,12 @@ public class AuthenticationService {
 		return AuthenticationResponse.builder().token(jwtToken).build();
 	}
 
-	public ValidateResponse getUserId(ValidateRequest request) {
-		Boolean isValid = null;
+	public ValidateResponse validateUser(String token) {
 		try {
-			isValid = jwtService.checkIfTokenValid(request.getToken(), request.getEmail());
-			if (isValid) {
-				User user = repo.findByEmail(request.getEmail())
+			String isValidUserEmail = jwtService.checkIfTokenValid(token);
+			log.error("email returned from jwtService: {}", isValidUserEmail);
+			if (isValidUserEmail != null) {
+				User user = repo.findByEmail(isValidUserEmail)
 						.orElseThrow(() -> new UserNotFoundException("user with given email not found"));
 				return new ValidateResponse(user.getUserId(), user.getRole(), "user validated");
 			} else {
