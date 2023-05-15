@@ -15,7 +15,7 @@ public class ParkService implements MandatoryService<Park> {
 	private final ParkRepo parkRepo;
 
 	@Override
-	public String addOrUodateVendor(Park vendor) {
+	public String addOrUpdateVendor(Park vendor) {
 		// TODO Auto-generated method stub
 		return parkRepo.save(vendor).getId();
 	}

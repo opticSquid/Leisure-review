@@ -2,6 +2,7 @@ package com.cts.interim.beta.entities;
 
 import com.fasterxml.jackson.databind.JsonNode;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -26,12 +27,13 @@ public class ServiceProvider {
 
 	private String placeName;
 
+	@Column(length = 500)
 	private String address;
 
 	@Email
 	@Transient
 	private String email;
-	
+
 	private String ownerId;
 
 	@Enumerated(EnumType.STRING)
@@ -49,18 +51,11 @@ public class ServiceProvider {
 		this.details = details;
 	}
 
-	// this constructor will be used to create empty serviceProvider
-	public ServiceProvider(String placeName, String address, String ownerId, PlaceType placeType) {
-		this.placeName = placeName;
-		this.address = address;
-		this.ownerId = ownerId;
-		this.placeType = placeType;
-	}
-
 	// hotel, park, mall will be formed and linked using this constructor
-	public ServiceProvider(String id, String placeName, String address, String ownerId) {
+	public ServiceProvider(String id, String placeName, PlaceType placeType, String address, String ownerId) {
 		this.id = id;
 		this.placeName = placeName;
+		this.placeType = placeType;
 		this.address = address;
 		this.ownerId = ownerId;
 	}

@@ -18,7 +18,7 @@ public class Mall extends ServiceProvider {
 	private Integer numberofRestaurants;
 
 	public Mall(ServiceProvider vendor) {
-		super(vendor.getId(), vendor.getPlaceName(), vendor.getAddress(), vendor.getOwnerId());
+		super(vendor.getId(), vendor.getPlaceName(), PlaceType.mall, vendor.getAddress(), vendor.getOwnerId());
 		this.numberOfShops = vendor.getDetails().get("numberOfShops").asInt();
 		this.floorArea = vendor.getDetails().get("floorArea").asDouble();
 		this.numberOfParkingSpaces = vendor.getDetails().get("numberOfParkingSpaces").asInt();

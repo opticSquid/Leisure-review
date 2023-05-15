@@ -49,7 +49,7 @@ public class Park extends ServiceProvider {
 	private String otherDetails;
 
 	public Park(ServiceProvider vendor) {
-		super(vendor.getId(), vendor.getPlaceName(), vendor.getAddress(), vendor.getOwnerId());
+		super(vendor.getId(), vendor.getPlaceName(), PlaceType.park, vendor.getAddress(), vendor.getOwnerId());
 		this.isChildrensPark = vendor.getDetails().get("isChildrensPark").asBoolean();
 		String rides = vendor.getDetails().get("rides").asText();
 		String[] strParts = rides.split(",");

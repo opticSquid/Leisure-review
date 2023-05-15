@@ -16,7 +16,7 @@ public class HotelService implements MandatoryService<Hotel>{
 private final HotelRepo hotelRepo;
 
 @Override
-public String addOrUodateVendor(Hotel vendor) throws IllegalArgumentException{
+public String addOrUpdateVendor(Hotel vendor) throws IllegalArgumentException{
 		return hotelRepo.save(vendor).getId();
 }
 

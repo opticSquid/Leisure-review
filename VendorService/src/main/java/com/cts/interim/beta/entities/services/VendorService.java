@@ -50,15 +50,12 @@ public class VendorService {
 		if (validUser.getStatusCode().is2xxSuccessful() && validUser.getBody().getRole() != null
 				&& isUserRoleChanged.getBody()) {
 			ValidateResponse user = validUser.getBody();
-//			ServiceProvider emptyServiceProvider = new ServiceProvider(vendor.getPlaceName(), vendor.getAddress(),
-//					user.getUserId(), vendor.getPlaceType());
-//			ServiceProvider createdVendor = vendorRepo.save(emptyServiceProvider);
 			vendor.setOwnerId(user.getUserId());
 			vendor.setDetails(vendor.getDetails());
 			if (vendor.getPlaceType() == PlaceType.hotel) {
 				Hotel newHotel = new Hotel(vendor);
 				try {
-					return "hotel/" + hotelService.addOrUodateVendor(newHotel);
+					return "hotel/" + hotelService.addOrUpdateVendor(newHotel);
 				} catch (IllegalArgumentException ex) {
 					throw new DataCouldNotbeSavedException("data could not be processed successfully",
 							new Throwable("the hotel data going to database was 'null'", ex.fillInStackTrace()));
@@ -66,7 +63,7 @@ public class VendorService {
 			} else if (vendor.getPlaceType() == PlaceType.park) {
 				Park newPark = new Park(vendor);
 				try {
-					return "park/" + parkService.addOrUodateVendor(newPark);
+					return "park/" + parkService.addOrUpdateVendor(newPark);
 				} catch (IllegalArgumentException ex) {
 					throw new DataCouldNotbeSavedException("data could not be processed successfully",
 							new Throwable("the park data going to database was 'null'", ex.fillInStackTrace()));
@@ -75,7 +72,7 @@ public class VendorService {
 			} else {
 				Mall newMall = new Mall(vendor);
 				try {
-					return "mall/" + mallService.addOrUodateVendor(newMall);
+					return "mall/" + mallService.addOrUpdateVendor(newMall);
 				} catch (IllegalArgumentException ex) {
 					throw new DataCouldNotbeSavedException("data could not be processed successfully",
 							new Throwable("the mall data going to database was 'null'", ex.fillInStackTrace()));

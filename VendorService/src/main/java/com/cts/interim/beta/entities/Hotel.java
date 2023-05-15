@@ -42,7 +42,7 @@ public class Hotel extends ServiceProvider {
 	private List<String> otherServices;
 
 	public Hotel(ServiceProvider vendor) {
-		super(vendor.getId(), vendor.getPlaceName(), vendor.getAddress(), vendor.getOwnerId());
+		super(vendor.getId(), vendor.getPlaceName(), PlaceType.hotel, vendor.getAddress(), vendor.getOwnerId());
 		this.numberOfRooms = vendor.getDetails().get("numberOfRooms").asInt();
 		String roomCategories = vendor.getDetails().get("roomCategories").asText();
 		String[] strParts = roomCategories.split(",");

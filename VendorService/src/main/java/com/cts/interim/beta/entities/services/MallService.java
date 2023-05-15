@@ -15,7 +15,7 @@ public class MallService implements MandatoryService<Mall> {
 	private final MallRepo mallRepo;
 
 	@Override
-	public String addOrUodateVendor(Mall vendor) {
+	public String addOrUpdateVendor(Mall vendor) {
 		// TODO Auto-generated method stub
 		return mallRepo.save(vendor).getId();
 	}

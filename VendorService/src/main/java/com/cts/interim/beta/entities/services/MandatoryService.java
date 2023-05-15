@@ -3,7 +3,7 @@ package com.cts.interim.beta.entities.services;
 import java.util.List;
 
 public interface MandatoryService<T> {
-	String addOrUodateVendor(T vendor);
+	String addOrUpdateVendor(T vendor);
 
 	T getVendorById(String id);
 
