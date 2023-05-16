@@ -35,9 +35,6 @@ public class FileUploadUtil {
 	}
 
 	public byte[] fetchSingleImage(PlaceType placeType, String vendorId, String imageName) throws IOException {
-//		InputStream in = getClass()
-//				.getResourceAsStream("vendor-photos/" + placeType.toString() + "/" + vendorId + "/" + imageName);
-//		return IOUtils.toByteArray(in);
 		byte[] image = new byte[0];
 		try {
 			Path uploadedPath = Paths.get("vendor-photos/" + placeType.toString() + "/" + vendorId);

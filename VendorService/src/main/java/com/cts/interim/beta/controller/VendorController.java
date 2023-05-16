@@ -5,6 +5,7 @@ import java.net.URI;
 
 import org.apache.hc.core5.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,13 +46,27 @@ public class VendorController {
 
 	@PostMapping("/upload-image/{vendorId}")
 	public ResponseEntity<String> newPlaceImage(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
-			@PathVariable String vendorId, @RequestParam("image") MultipartFile image) throws IOException  {
+			@PathVariable String vendorId, @RequestParam("image") MultipartFile image) throws IOException {
 		try {
 			vendorService.uploadPhoto(token, vendorId, image);
 		} catch (IOException ex) {
 			throw ex;
 		}
 		return ResponseEntity.status(HttpStatus.SC_ACCEPTED).build();
+	}
+
+	@DeleteMapping("/{vendorId}")
+	public ResponseEntity<String> deleteVendor(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+			@PathVariable String vendorId) {
+		try {
+			if (vendorService.deleteVendor(token, vendorId)) {
+				return ResponseEntity.ok().body("vendor deleted");
+			} else {
+				return ResponseEntity.status(HttpStatus.SC_FORBIDDEN).body("vendor could not be deleted");
+			}
+		} catch (Exception ex) {
+			throw ex;
+		}
 	}
 
 }

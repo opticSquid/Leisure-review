@@ -95,8 +95,24 @@ public class VendorService {
 		}
 	}
 
-	private ServiceProvider findProviderById(String id) {
+	public ServiceProvider findProviderById(String id) {
 		return vendorRepo.findById(id).orElse(null);
+	}
+
+	public List<ServiceProvider> fetchAllProviders() {
+		return vendorRepo.findAll();
+	}
+
+	public Boolean deleteVendor(String token, String id) {
+		ResponseEntity<ValidateResponse> validUser = validateUser(token);
+		ServiceProvider vendor = findProviderById(id);
+		if (vendor != null && validUser.getBody().getRole() == Role.SERVICE_OWNER) {
+			vendorRepo.deleteById(id);
+			return true;
+		} else {
+			throw new UserNotValidException("permission denied", new Throwable(
+					"the current user identified by the id is not valid or the user does not have the permission to perform this operation"));
+		}
 	}
 
 	public void uploadPhoto(String token, String vendorId, MultipartFile image) throws IOException {
@@ -104,7 +120,7 @@ public class VendorService {
 		ServiceProvider provider = findProviderById(vendorId);
 		if (validUser.getBody().getUserId() != null && validUser.getBody().getRole() == Role.SERVICE_OWNER
 				&& provider != null) {
-			String fileName = StringUtils.cleanPath(image.getOriginalFilename()).replaceAll("\\s+","");
+			String fileName = StringUtils.cleanPath(image.getOriginalFilename()).replaceAll("\\s+", "");
 			System.out.println("File name: " + fileName);
 			String upload_dir = "vendor-photos/" + provider.getPlaceType().toString() + "/" + provider.getId();
 			fileUploadUtil.saveFile(upload_dir, fileName, image);

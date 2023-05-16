@@ -11,15 +11,14 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cts.interim.beta.entities.ServiceProvider;
 import com.cts.interim.beta.entities.services.VendorService;
 import com.cts.interim.beta.exceptions.ResourceNotFoundEception;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequestMapping("/vendors")
-@Slf4j
 @RequiredArgsConstructor
 public class NormalUserController {
 	private final VendorService vendorService;
@@ -42,12 +41,21 @@ public class NormalUserController {
 		} else {
 			imageExtension = imageName.substring(imageName.length() - 3);
 		}
-		System.out.println("Image extension: " + imageExtension);
 		MediaType contentType = imageExtension.equals("jpg") ? MediaType.IMAGE_JPEG : MediaType.IMAGE_PNG;
 		try {
 			return ResponseEntity.ok().contentType(contentType).body(vendorService.getPhoto(vendorId, imageName));
 		} catch (Exception ex) {
 			throw ex;
 		}
+	}
+
+	@GetMapping("/{vendorId}")
+	public ServiceProvider getProviderDetails(@PathVariable String vendorId) {
+		return vendorService.findProviderById(vendorId);
+	}
+
+	@GetMapping
+	public List<ServiceProvider> getAllProviders() {
+		return vendorService.fetchAllProviders();
 	}
 }
