@@ -47,7 +47,6 @@ public class VendorService {
 		} catch (HttpClientErrorException ex) {
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ValidateResponse(null, null, "jwt error"));
 		}
-
 	}
 
 	private ResponseEntity<Boolean> changeRole(String userId) {
@@ -97,6 +96,14 @@ public class VendorService {
 
 	public ServiceProvider findProviderById(String id) {
 		return vendorRepo.findById(id).orElse(null);
+	}
+
+	public Boolean ifVendorExists(String id) {
+		if (findProviderById(id) != null) {
+			return true;
+		} else {
+			return false;
+		}
 	}
 
 	public List<ServiceProvider> fetchAllProviders() {

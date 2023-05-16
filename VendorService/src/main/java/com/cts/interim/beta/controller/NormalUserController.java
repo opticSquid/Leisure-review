@@ -58,4 +58,9 @@ public class NormalUserController {
 	public List<ServiceProvider> getAllProviders() {
 		return vendorService.fetchAllProviders();
 	}
+
+	@GetMapping("/check/{vendorId}")
+	public Boolean checkVendorForExistense(@PathVariable String vendorId) {
+		return vendorService.ifVendorExists(vendorId);
+	}
 }

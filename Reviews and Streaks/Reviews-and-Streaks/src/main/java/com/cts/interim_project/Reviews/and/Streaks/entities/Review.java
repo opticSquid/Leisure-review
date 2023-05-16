@@ -25,4 +25,12 @@ public class Review {
 	@Column(length = 500)
 	private String review;
 	private Integer rating;
+
+	public Review(String serviceProviderId, String userId, String review, Integer rating) {
+		super();
+		this.serviceProviderId = serviceProviderId;
+		this.userId = userId;
+		this.review = review;
+		this.rating = rating;
+	}
 }

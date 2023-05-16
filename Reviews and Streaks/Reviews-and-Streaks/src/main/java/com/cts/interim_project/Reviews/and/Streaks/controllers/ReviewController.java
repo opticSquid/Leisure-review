@@ -12,14 +12,16 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.cts.interim_project.Reviews.and.Streaks.Exceptions.ProviderNotFoundException;
 import com.cts.interim_project.Reviews.and.Streaks.entities.Review;
-import com.cts.interim_project.Reviews.and.Streaks.repository.ReviewRepo;
+import com.cts.interim_project.Reviews.and.Streaks.entities.ReviewPOJO;
 import com.cts.interim_project.Reviews.and.Streaks.services.ReviewService;
+import com.google.common.net.HttpHeaders;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,11 +33,12 @@ public class ReviewController {
 	private ReviewService reviewService;
 
 	@PostMapping("/new")
-	public ResponseEntity<String> addReview(@RequestBody Review review) {
+	public ResponseEntity<String> addReview(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+			@RequestBody ReviewPOJO review) {
 		log.error("Coming review: {}", review);
 		String id = null;
 		try {
-			id = reviewService.addReview(review);
+			id = reviewService.addReview(token, review);
 		} catch (ProviderNotFoundException p) {
 			return ResponseEntity.status(HttpStatus.SC_BAD_REQUEST).body(p.getMessage());
 		}
@@ -49,22 +52,24 @@ public class ReviewController {
 		return ResponseEntity.status(HttpStatus.SC_OK).body(reviewService.getAllReviewsOfServiceProvider(providerId));
 	}
 
-	@GetMapping("/user/get/{userId}")
-	public ResponseEntity<List<Review>> getAllReviewsOfUser(@PathVariable("userId") String userId) {
-		return ResponseEntity.status(HttpStatus.SC_OK).body(reviewService.getAllReviewsOfUser(userId));
+	@GetMapping("/user/get")
+	public ResponseEntity<List<Review>> getAllReviewsOfUser(@RequestHeader(HttpHeaders.AUTHORIZATION) String token) {
+		return ResponseEntity.status(HttpStatus.SC_OK).body(reviewService.getAllReviewsOfUser(token));
 	}
 
 	@PutMapping("/edit")
-	public ResponseEntity<Review> editReview(@RequestBody Review review) {
-		String id = reviewService.editReview(review);
+	public ResponseEntity<Review> editReview(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+			@RequestBody Review review) {
+		String id = reviewService.editReview(token, review);
 		URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/reviews/{id}").buildAndExpand(id)
 				.toUri();
 		return ResponseEntity.accepted().header("location", location.toString()).build();
 	}
 
 	@DeleteMapping("/delete/{reviewId}")
-	public ResponseEntity<String> deleteReview(@PathVariable("reviewId") String reviewId) {
-		reviewService.deleteReview(reviewId);
+	public ResponseEntity<String> deleteReview(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+			@PathVariable("reviewId") String reviewId) {
+		reviewService.deleteReview(token, reviewId);
 		return ResponseEntity.ok().build();
 	}
 }
