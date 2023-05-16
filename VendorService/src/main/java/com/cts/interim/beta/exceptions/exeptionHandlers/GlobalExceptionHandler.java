@@ -2,6 +2,7 @@ package com.cts.interim.beta.exceptions.exeptionHandlers;
 
 import java.io.IOException;
 
+import org.hibernate.ResourceClosedException;
 import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ProblemDetail;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.cts.interim.beta.exceptions.DataCouldNotbeSavedException;
+import com.cts.interim.beta.exceptions.ResourceNotFoundEception;
 import com.cts.interim.beta.exceptions.UserNotValidException;
 import com.cts.interim.beta.exceptions.UserOperationNotPermitted;
 
@@ -37,11 +39,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		problem.setTitle("Image upload failed");
 		return problem;
 	}
+
 	@ExceptionHandler(UserOperationNotPermitted.class)
 	public ProblemDetail UserOpNotPermittedHandler(UserOperationNotPermitted ex) {
-		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403),
-				"User account is not a vendor account");
+		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getErrorMsg());
 		problem.setTitle("Operation not permitted");
+		return problem;
+	}
+
+	@ExceptionHandler(ResourceNotFoundEception.class)
+	public ProblemDetail ResourceNotFoundHandler(ResourceClosedException ex) {
+		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), ex.getMessage());
+		problem.setTitle("Requested resource was not found");
 		return problem;
 	}
 }

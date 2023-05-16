@@ -1,6 +1,8 @@
 package com.cts.interim.beta.entities.services;
 
 import java.io.IOException;
+import java.net.URI;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,6 +21,7 @@ import com.cts.interim.beta.entities.Park;
 import com.cts.interim.beta.entities.PlaceType;
 import com.cts.interim.beta.entities.ServiceProvider;
 import com.cts.interim.beta.exceptions.DataCouldNotbeSavedException;
+import com.cts.interim.beta.exceptions.ResourceNotFoundEception;
 import com.cts.interim.beta.exceptions.UserNotValidException;
 import com.cts.interim.beta.exceptions.UserOperationNotPermitted;
 import com.cts.interim.beta.repositories.VendorRepo;
@@ -101,7 +104,7 @@ public class VendorService {
 		ServiceProvider provider = findProviderById(vendorId);
 		if (validUser.getBody().getUserId() != null && validUser.getBody().getRole() == Role.SERVICE_OWNER
 				&& provider != null) {
-			String fileName = StringUtils.cleanPath(image.getOriginalFilename());
+			String fileName = StringUtils.cleanPath(image.getOriginalFilename()).replaceAll("\\s+","");
 			System.out.println("File name: " + fileName);
 			String upload_dir = "vendor-photos/" + provider.getPlaceType().toString() + "/" + provider.getId();
 			fileUploadUtil.saveFile(upload_dir, fileName, image);
@@ -114,6 +117,31 @@ public class VendorService {
 		} else if (provider == null) {
 			throw new DataCouldNotbeSavedException("vendor with given id is not found",
 					new Throwable("the vendor id that was provided was not found in the database"));
+		}
+	}
+
+	public byte[] getPhoto(String vendorId, String imageName) throws IOException {
+		ServiceProvider vendor = findProviderById(vendorId);
+		if (vendor != null) {
+			return fileUploadUtil.fetchSingleImage(vendor.getPlaceType(), vendorId, imageName);
+		} else {
+			throw new UserNotValidException("user does not exist", new Throwable("user with given id does not exist"));
+		}
+
+	}
+
+	public List<URI> getAllPhotos(String vendorId) {
+		ServiceProvider vendor = findProviderById(vendorId);
+		if (vendor != null) {
+			List<URI> allImages = fileUploadUtil.getAllPhotos(vendor.getPlaceType(), vendorId);
+			log.error("All images: {}", allImages);
+			if (allImages == null) {
+				throw new ResourceNotFoundEception("All the images requested for was not found in the server");
+			} else {
+				return allImages;
+			}
+		} else {
+			throw new UserNotValidException("user does not exist", new Throwable("user with given id does not exist"));
 		}
 	}
 }
