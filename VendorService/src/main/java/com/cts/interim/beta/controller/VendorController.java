@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,6 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.cts.interim.beta.entities.ServiceProvider;
 import com.cts.interim.beta.entities.services.VendorService;
+import com.cts.interim.beta.exceptions.ResourceNotFoundException;
 import com.google.common.net.HttpHeaders;
 
 import lombok.RequiredArgsConstructor;
@@ -38,7 +40,7 @@ public class VendorController {
 	public ResponseEntity<String> addNew(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
 			@RequestBody ServiceProvider newVendor) {
 		try {
-			return ResponseEntity.created(UriBuilder(vendorService.addVendor(token, newVendor))).build();
+			return ResponseEntity.created(UriBuilder(vendorService.addOrUpdateVendor(token, newVendor))).build();
 		} catch (Exception e) {
 			throw e;
 		}
@@ -53,6 +55,16 @@ public class VendorController {
 			throw ex;
 		}
 		return ResponseEntity.status(HttpStatus.SC_ACCEPTED).build();
+	}
+
+	@PutMapping("/update-service")
+	public ResponseEntity<String> updateService(@RequestHeader(HttpHeaders.AUTHORIZATION) String token,
+			@RequestBody ServiceProvider vendor) {
+		try {
+			return ResponseEntity.created(UriBuilder(vendorService.addOrUpdateVendor(token, vendor))).build();
+		} catch (Exception e) {
+			throw e;
+		}
 	}
 
 	@DeleteMapping("/{vendorId}")

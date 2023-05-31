@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import com.cts.interim.beta.exceptions.DataCouldNotbeSavedException;
-import com.cts.interim.beta.exceptions.ResourceNotFoundEception;
+import com.cts.interim.beta.exceptions.ResourceNotFoundException;
 import com.cts.interim.beta.exceptions.UserNotValidException;
 import com.cts.interim.beta.exceptions.UserOperationNotPermitted;
 
@@ -32,14 +32,6 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return problem;
 	}
 
-	@ExceptionHandler(IOException.class)
-	public ProblemDetail IOExceptionHandler(IOException ex) {
-		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500),
-				"Image could not be uploaded due to some internal error");
-		problem.setTitle("Image upload failed");
-		return problem;
-	}
-
 	@ExceptionHandler(UserOperationNotPermitted.class)
 	public ProblemDetail UserOpNotPermittedHandler(UserOperationNotPermitted ex) {
 		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(403), ex.getErrorMsg());
@@ -47,10 +39,18 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 		return problem;
 	}
 
-	@ExceptionHandler(ResourceNotFoundEception.class)
-	public ProblemDetail ResourceNotFoundHandler(ResourceClosedException ex) {
+	@ExceptionHandler(ResourceNotFoundException.class)
+	public ProblemDetail ResourceNotFoundHandler(ResourceNotFoundException ex) {
 		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(404), ex.getMessage());
 		problem.setTitle("Requested resource was not found");
+		return problem;
+	}
+
+	@ExceptionHandler(IOException.class)
+	public ProblemDetail IOExceptionHandler(IOException ex) {
+		ProblemDetail problem = ProblemDetail.forStatusAndDetail(HttpStatusCode.valueOf(500),
+				"Image could not be uploaded due to some internal error");
+		problem.setTitle("Image upload failed");
 		return problem;
 	}
 }

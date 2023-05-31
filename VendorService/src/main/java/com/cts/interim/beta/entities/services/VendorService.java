@@ -21,7 +21,7 @@ import com.cts.interim.beta.entities.Park;
 import com.cts.interim.beta.entities.PlaceType;
 import com.cts.interim.beta.entities.ServiceProvider;
 import com.cts.interim.beta.exceptions.DataCouldNotbeSavedException;
-import com.cts.interim.beta.exceptions.ResourceNotFoundEception;
+import com.cts.interim.beta.exceptions.ResourceNotFoundException;
 import com.cts.interim.beta.exceptions.UserNotValidException;
 import com.cts.interim.beta.exceptions.UserOperationNotPermitted;
 import com.cts.interim.beta.repositories.VendorRepo;
@@ -53,14 +53,29 @@ public class VendorService {
 		return restTemplate.postForEntity("http://USERS/users/auth/change-role", userId, Boolean.class);
 	}
 
-	public String addVendor(String token, ServiceProvider vendor) {
+	public String addOrUpdateVendor(String token, ServiceProvider vendor) {
 		ResponseEntity<ValidateResponse> validUser = validateUser(token);
 		ResponseEntity<Boolean> isUserRoleChanged = changeRole(validUser.getBody().getUserId());
 		if (validUser.getStatusCode().is2xxSuccessful() && validUser.getBody().getRole() != null
 				&& isUserRoleChanged.getBody()) {
 			ValidateResponse user = validUser.getBody();
-			vendor.setOwnerId(user.getUserId());
-			vendor.setDetails(vendor.getDetails());
+			// if the request is coming for update
+			// check if the vendor with given id exists in DB from earlier or not
+			if (vendor.getId() != null) {
+				ServiceProvider existingVendor = findProviderById(vendor.getId());
+				if (existingVendor == null) {
+					throw new ResourceNotFoundException("No vendor found with given id");
+				}
+				// check if only the owner is updating the entity
+				if (!vendor.getOwnerId().equals(user.getUserId())) {
+					throw new UserNotValidException("permission denied", new Throwable(
+							"the current user identified by the Authorization header token does not have the permission to perform this operation"));
+				}else {
+					vendor.setOwnerId(user.getUserId());
+				}
+			}else {
+				vendor.setOwnerId(user.getUserId());
+			}
 			if (vendor.getPlaceType() == PlaceType.hotel) {
 				Hotel newHotel = new Hotel(vendor);
 				try {
@@ -113,7 +128,9 @@ public class VendorService {
 	public Boolean deleteVendor(String token, String id) {
 		ResponseEntity<ValidateResponse> validUser = validateUser(token);
 		ServiceProvider vendor = findProviderById(id);
-		if (vendor != null && validUser.getBody().getRole() == Role.SERVICE_OWNER) {
+		// check if the user is allowed to delete the entity
+		if (vendor != null && validUser.getBody().getRole() == Role.SERVICE_OWNER
+				&& vendor.getOwnerId().equals(validUser.getBody().getUserId())) {
 			vendorRepo.deleteById(id);
 			return true;
 		} else {
@@ -159,7 +176,7 @@ public class VendorService {
 			List<URI> allImages = fileUploadUtil.getAllPhotos(vendor.getPlaceType(), vendorId);
 			log.error("All images: {}", allImages);
 			if (allImages == null) {
-				throw new ResourceNotFoundEception("All the images requested for was not found in the server");
+				throw new ResourceNotFoundException("All the images requested for was not found in the server");
 			} else {
 				return allImages;
 			}

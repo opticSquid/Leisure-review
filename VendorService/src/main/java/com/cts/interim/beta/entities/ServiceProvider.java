@@ -1,5 +1,7 @@
 package com.cts.interim.beta.entities;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonProperty.Access;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import jakarta.persistence.Column;
@@ -30,28 +32,26 @@ public class ServiceProvider {
 	@Column(length = 500)
 	private String address;
 
-	@Email
-	@Transient
-	private String email;
-
 	private String ownerId;
 
 	@Enumerated(EnumType.STRING)
 	private PlaceType placeType;
 
 	@Transient
+	@JsonProperty(access = Access.WRITE_ONLY)
 	private JsonNode details;
 
 	// Request will come using this constructor
-	public ServiceProvider(String placeName, String address, String email, PlaceType placeType, JsonNode details) {
+	// used to create new vendors
+	public ServiceProvider(String placeName, String address, PlaceType placeType, JsonNode details) {
 		this.placeName = placeName;
 		this.address = address;
-		this.email = email;
 		this.placeType = placeType;
 		this.details = details;
 	}
 
 	// hotel, park, mall will be formed and linked using this constructor
+	// used for updating vendorDetails
 	public ServiceProvider(String id, String placeName, PlaceType placeType, String address, String ownerId) {
 		this.id = id;
 		this.placeName = placeName;

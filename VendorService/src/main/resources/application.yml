@@ -18,6 +18,9 @@ eureka:
     register-with-eureka: true
   instance:
     instance-id: ${spring.cloud.client.hostname}:${spring.application.name}:${spring.application.instance_id:${random.value}}
+server:
+  error:
+    include-stacktrace: never
 logging:
   level:
     web: error

@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cts.interim.beta.entities.ServiceProvider;
 import com.cts.interim.beta.entities.services.VendorService;
-import com.cts.interim.beta.exceptions.ResourceNotFoundEception;
+import com.cts.interim.beta.exceptions.ResourceNotFoundException;
 
 import lombok.RequiredArgsConstructor;
 
@@ -37,7 +37,7 @@ public class NormalUserController {
 			throws Exception {
 		String imageExtension = null;
 		if (imageName.length() <= 3) {
-			throw new ResourceNotFoundEception("invalid image name");
+			throw new ResourceNotFoundException("invalid image name");
 		} else {
 			imageExtension = imageName.substring(imageName.length() - 3);
 		}
