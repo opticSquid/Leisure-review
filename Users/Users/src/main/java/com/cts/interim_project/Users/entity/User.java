@@ -15,6 +15,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.Email;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,6 +35,7 @@ public class User implements UserDetails {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
 	private String userId;
+	@Email
 	@Column(unique = true)
 	private String email;
 	private String name;
@@ -44,7 +46,9 @@ public class User implements UserDetails {
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
-		// TODO Auto-generated method stub
+		// Returns the collection of anything that extends GrantedAuthority class
+		// In this case the Set of SimpleGrantedAuthority
+		// because this class extends GrantedAuthority class
 		return Set.of(new SimpleGrantedAuthority(role.name()));
 	}
 

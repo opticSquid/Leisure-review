@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cts.interim_project.Users.controller.auth.AuthenticationRequest;
-import com.cts.interim_project.Users.controller.auth.AuthenticationResponse;
-import com.cts.interim_project.Users.controller.auth.RegisterRequest;
-import com.cts.interim_project.Users.controller.auth.ValidateRequest;
-import com.cts.interim_project.Users.controller.auth.ValidateResponse;
+import com.cts.interim_project.Users.controller.dto.AuthenticationRequest;
+import com.cts.interim_project.Users.controller.dto.AuthenticationResponse;
+import com.cts.interim_project.Users.controller.dto.RegisterRequest;
+import com.cts.interim_project.Users.controller.dto.ValidateRequest;
+import com.cts.interim_project.Users.controller.dto.ValidateResponse;
 import com.cts.interim_project.Users.exceptions.UserNotFoundException;
 import com.cts.interim_project.Users.service.AuthenticationService;
 

@@ -5,11 +5,11 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import com.cts.interim_project.Users.controller.auth.AuthenticationRequest;
-import com.cts.interim_project.Users.controller.auth.AuthenticationResponse;
-import com.cts.interim_project.Users.controller.auth.RegisterRequest;
-import com.cts.interim_project.Users.controller.auth.ValidateRequest;
-import com.cts.interim_project.Users.controller.auth.ValidateResponse;
+import com.cts.interim_project.Users.controller.dto.AuthenticationRequest;
+import com.cts.interim_project.Users.controller.dto.AuthenticationResponse;
+import com.cts.interim_project.Users.controller.dto.RegisterRequest;
+import com.cts.interim_project.Users.controller.dto.ValidateRequest;
+import com.cts.interim_project.Users.controller.dto.ValidateResponse;
 import com.cts.interim_project.Users.entity.Role;
 import com.cts.interim_project.Users.entity.User;
 import com.cts.interim_project.Users.exceptions.JwtNotValidException;

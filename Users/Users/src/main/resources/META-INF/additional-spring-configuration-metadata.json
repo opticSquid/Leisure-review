@@ -1,9 +1,7 @@
-{
-	"properties": [
-		{
-			"name": "jwt.secret",
-			"type": "java.lang.String",
-			"description": "'jwt_secret' defines the secret signing key for the jwt tokens to be generated"
-		}
-	]
-}
+{"properties": [
+  {
+    "name": "jwt.secret",
+    "type": "java.lang.String",
+    "description": "'jwt_secret' defines the secret signing key for the jwt tokens to be generated"
+  }
+]}

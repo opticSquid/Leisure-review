@@ -1,0 +1,109 @@
+{
+	"info": {
+		"_postman_id": "87a6af76-d6ee-4bf9-bec2-d853a4acbbe3",
+		"name": "User Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "User Login",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"email\": \"soumalyabhattacharya6@gmail.com\",\r\n    \"password\": \"PkNLm@&$2357\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{user_service}}/auth/authenticate",
+					"host": [
+						"{{user_service}}"
+					],
+					"path": [
+						"auth",
+						"authenticate"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Register User",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Mithu Bhattacharya\",\r\n    \"email\": \"soumalya6@gmail.com\",\r\n    \"password\": \"PkNLm@&$2357\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{user_service}}/auth/register",
+					"host": [
+						"{{user_service}}"
+					],
+					"path": [
+						"auth",
+						"register"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Test end point",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{user_service}}/api/v1/demo",
+					"host": [
+						"{{user_service}}"
+					],
+					"path": [
+						"api",
+						"v1",
+						"demo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Validate Token",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"token\": \"eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb3VtYWx5YWJoYXR0YWNoYXJ5YTZAZ21haWwuY29tIiwiaWF0IjoxNjg0MjI4NzcwLCJleHAiOjE2ODQyMzIzNzB9.tsdsF5sL8vgkFFB4JTUvOSEIYuyWtkfD8zbRFsRuIQE\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{user_service}}/auth/validate",
+					"host": [
+						"{{user_service}}"
+					],
+					"path": [
+						"auth",
+						"validate"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

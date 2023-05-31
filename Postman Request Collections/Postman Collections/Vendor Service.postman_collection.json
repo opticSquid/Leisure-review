@@ -1,0 +1,134 @@
+{
+	"info": {
+		"_postman_id": "8e99ed00-3ee6-4708-8b41-6c6154ea825e",
+		"name": "Vendor Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add new Vendor",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb3VtYWx5YWJoYXR0YWNoYXJ5YTZAZ21haWwuY29tIiwiaWF0IjoxNjg0MjM4MTc2LCJleHAiOjE2ODQyNDE3NzZ9.xwmo2Cmx0JzlR3whe6GsC4LfbGL0fqY0bbPa-O9fEPQ",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"placeName\": \"SB Resort\",\r\n    \"address\": \"Arambagh\",\r\n    \"description\": \"5 star Hotel\",\r\n    \"email\": \"soumalyabhattacharya6@gmail.com\",\r\n    \"placeType\": \"hotel\",\r\n    \"details\": {\r\n        \"numberOfRooms\": 2,\r\n        \"roomCategories\": \"normal, delux, premium\",\r\n        \"pricings\": {\r\n            \"normal\": 22.00,\r\n            \"delux\": 32.00,\r\n            \"premium\": 42.00\r\n        },\r\n        \"isVegAvailable\": true,\r\n        \"offDays\": \"none\",\r\n        \"otherServices\": [\"transport\", \"room service\"]\r\n    }\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{vendor_service}}/admin/add-new-service",
+					"host": [
+						"{{vendor_service}}"
+					],
+					"path": [
+						"admin",
+						"add-new-service"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Upload image",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb3VtYWx5YWJoYXR0YWNoYXJ5YTZAZ21haWwuY29tIiwiaWF0IjoxNjg0MjMxMjY1LCJleHAiOjE2ODQyMzQ4NjV9.HrcFbDAHfyYO8sdvhe7uQsFHJeHhVAdrM4eKPnt8hAA",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "image",
+							"type": "file",
+							"src": "/C:/Users/2276463/Downloads/facts-about-taj-hotel-mumbai-you-probably-didnt-know-about-95857952 (1).jpg"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{vendor_service}}/admin/upload-image/e8bda34e-940f-4636-8dd8-999bf509ffe9",
+					"host": [
+						"{{vendor_service}}"
+					],
+					"path": [
+						"admin",
+						"upload-image",
+						"e8bda34e-940f-4636-8dd8-999bf509ffe9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all images of a vendor",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{vendor_service}}/get-all-images/e8bda34e-940f-4636-8dd8-999bf509ffe9",
+					"host": [
+						"{{vendor_service}}"
+					],
+					"path": [
+						"get-all-images",
+						"e8bda34e-940f-4636-8dd8-999bf509ffe9"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a single image",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/vendors/images/e8bda34e-940f-4636-8dd8-999bf509ffe9/facts-about-taj-hotel-mumbai-you-probably-didnt-know-about-95857952(1).jpg",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"vendors",
+						"images",
+						"e8bda34e-940f-4636-8dd8-999bf509ffe9",
+						"facts-about-taj-hotel-mumbai-you-probably-didnt-know-about-95857952(1).jpg"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get a particular vendor by id",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{vendor_service}}/b976ad05-8d8a-4c8a-a012-27b66241867d",
+					"host": [
+						"{{vendor_service}}"
+					],
+					"path": [
+						"b976ad05-8d8a-4c8a-a012-27b66241867d"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

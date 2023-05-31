@@ -24,13 +24,15 @@ public class ApplicationConfig {
 
 	@Bean
 	UserDetailsService userDetailsService() {
+		// This is a functional interface and there is a method called loadByUserName.
+		// Here we are implementing this method. 
 		return username -> userRepo.findByEmail(username)
 				.orElseThrow(() -> new UsernameNotFoundException("user with given email not found"));
 	}
 
 	@Bean
 	AuthenticationProvider authenticationProvider() {
-		// fetch user details and encode password from DB
+		// fetch user details from DB and encode password while saving in DB
 		DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
 		authProvider.setUserDetailsService(userDetailsService());
 		authProvider.setPasswordEncoder(passwordEncoder());

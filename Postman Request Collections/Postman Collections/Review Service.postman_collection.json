@@ -1,0 +1,140 @@
+{
+	"info": {
+		"_postman_id": "a759af26-7905-43b8-a5d4-8f00b00759e6",
+		"name": "Review Service",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add Review",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb3VtYWx5YTZAZ21haWwuY29tIiwiaWF0IjoxNjg0MjM4MzMwLCJleHAiOjE2ODQyNDE5MzB9.gHDCutqou2RhdcGqaoLI1CH_bu4tiRKbrHbw817hb6s",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"serviceProviderId\": \"779dbab0-56a9-4d81-9130-1274515c61a4\",\r\n    \"review\": \"good\",\r\n    \"rating\": 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{review_service}}/new",
+					"host": [
+						"{{review_service}}"
+					],
+					"path": [
+						"new"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all reviews of a service Provider",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{review_service}}/provider/get/779dbab0-56a9-4d81-9130-1274515c61a4",
+					"host": [
+						"{{review_service}}"
+					],
+					"path": [
+						"provider",
+						"get",
+						"779dbab0-56a9-4d81-9130-1274515c61a4"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit Review",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb3VtYWx5YTZAZ21haWwuY29tIiwiaWF0IjoxNjg0MjM4MzMwLCJleHAiOjE2ODQyNDE5MzB9.gHDCutqou2RhdcGqaoLI1CH_bu4tiRKbrHbw817hb6s",
+						"type": "default"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"reviewId\": \"2d219dfe-9df6-4139-95dc-27c2db5c48b5\",\r\n    \"serviceProviderId\": \"779dbab0-56a9-4d81-9130-1274515c61a4\",\r\n    \"userId\": \"48c9bc6b-b78e-4f93-b9b5-5c6feb48d2aa\",\r\n    \"review\": \"very good\",\r\n    \"rating\": 4\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{review_service}}/edit",
+					"host": [
+						"{{review_service}}"
+					],
+					"path": [
+						"edit"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Review",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb3VtYWx5YTZAZ21haWwuY29tIiwiaWF0IjoxNjg0MjM4MzMwLCJleHAiOjE2ODQyNDE5MzB9.gHDCutqou2RhdcGqaoLI1CH_bu4tiRKbrHbw817hb6s ",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "{{review_service}}/delete/2d219dfe-9df6-4139-95dc-27c2db5c48b5",
+					"host": [
+						"{{review_service}}"
+					],
+					"path": [
+						"delete",
+						"2d219dfe-9df6-4139-95dc-27c2db5c48b5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get all reviews of a user",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Authorization",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb3VtYWx5YTZAZ21haWwuY29tIiwiaWF0IjoxNjg0MjM4MzMwLCJleHAiOjE2ODQyNDE5MzB9.gHDCutqou2RhdcGqaoLI1CH_bu4tiRKbrHbw817hb6s",
+						"type": "default"
+					}
+				],
+				"url": {
+					"raw": "{{review_service}}/user/get",
+					"host": [
+						"{{review_service}}"
+					],
+					"path": [
+						"user",
+						"get"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
