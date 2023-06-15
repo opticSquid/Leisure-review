@@ -18,8 +18,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.cts.interim.beta.entities.ServiceProvider;
-import com.cts.interim.beta.entities.services.VendorService;
 import com.cts.interim.beta.exceptions.ResourceNotFoundException;
+import com.cts.interim.beta.services.VendorService;
 import com.google.common.net.HttpHeaders;
 
 import lombok.RequiredArgsConstructor;

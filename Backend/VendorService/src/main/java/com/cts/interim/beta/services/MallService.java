@@ -1,39 +1,39 @@
-package com.cts.interim.beta.entities.services;
+package com.cts.interim.beta.services;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import com.cts.interim.beta.entities.Park;
-import com.cts.interim.beta.repositories.ParkRepo;
+import com.cts.interim.beta.entities.Mall;
+import com.cts.interim.beta.repositories.MallRepo;
 
 import lombok.RequiredArgsConstructor;
 
 @Service
 @RequiredArgsConstructor
-public class ParkService implements MandatoryService<Park> {
-	private final ParkRepo parkRepo;
+public class MallService implements MandatoryService<Mall> {
+	private final MallRepo mallRepo;
 
 	@Override
-	public String addOrUpdateVendor(Park vendor) {
+	public String addOrUpdateVendor(Mall vendor) {
 		// TODO Auto-generated method stub
-		return parkRepo.save(vendor).getId();
+		return mallRepo.save(vendor).getId();
 	}
 
 	@Override
-	public Park getVendorById(String id) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public List<Park> getAllVendorsOfSingleOwner(String ownerId) {
+	public Mall getVendorById(String id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public List<Park> getAllVendors() {
+	public List<Mall> getAllVendorsOfSingleOwner(String ownerId) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<Mall> getAllVendors() {
 		// TODO Auto-generated method stub
 		return null;
 	}

@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cts.interim.beta.entities.ServiceProvider;
-import com.cts.interim.beta.entities.services.VendorService;
 import com.cts.interim.beta.exceptions.ResourceNotFoundException;
+import com.cts.interim.beta.services.VendorService;
 
 import lombok.RequiredArgsConstructor;
 

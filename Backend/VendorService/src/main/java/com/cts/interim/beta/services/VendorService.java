@@ -1,4 +1,4 @@
-package com.cts.interim.beta.entities.services;
+package com.cts.interim.beta.services;
 
 import java.io.IOException;
 import java.net.URI;
