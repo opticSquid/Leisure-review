@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.cts.interim_project.Reviews.and.Streaks.Exceptions.ProviderNotFoundException;
+import com.cts.interim_project.Reviews.and.Streaks.entities.RatingStats;
 import com.cts.interim_project.Reviews.and.Streaks.entities.Review;
 import com.cts.interim_project.Reviews.and.Streaks.entities.ReviewPOJO;
 import com.cts.interim_project.Reviews.and.Streaks.services.ReviewService;
@@ -50,6 +51,21 @@ public class ReviewController {
 	@GetMapping("/provider/get/{providerId}")
 	public ResponseEntity<List<Review>> getAllReviewsOfServiceProvider(@PathVariable("providerId") String providerId) {
 		return ResponseEntity.status(HttpStatus.SC_OK).body(reviewService.getAllReviewsOfServiceProvider(providerId));
+	}
+
+	@GetMapping("/provider/get/avg-rating/{providerId}")
+	public ResponseEntity<Double> getAverageRatingOfAServiceProvider(@PathVariable("providerId") String providerId) {
+		try {
+			return ResponseEntity.status(HttpStatus.SC_OK).body(reviewService.getAverageRating(providerId));
+		} catch (ProviderNotFoundException ex) {
+			throw ex;
+		}
+	}
+
+	@GetMapping("/provider/get/rating-stats/{providerId}")
+	public ResponseEntity<List<RatingStats>> getRatingStatsOfServiceProvider(
+			@PathVariable("providerId") String providerId) {
+		return ResponseEntity.status(HttpStatus.SC_OK).body(reviewService.getRatingStatsOfServiceProvider(providerId));
 	}
 
 	@GetMapping("/user/get")

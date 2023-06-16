@@ -8,7 +8,7 @@ import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 
-const VendorCard = ({ title, address, image, description }) => {
+const VendorCard = ({ title, address, rating, image, description }) => {
   return (
     <Card sx={{ maxWidth: 345 }}>
       <CardMedia
@@ -23,10 +23,11 @@ const VendorCard = ({ title, address, image, description }) => {
           {description}
         </Typography>
       </CardContent>
-      <CardActions disableSpacing>
+      <CardActions>
         <IconButton aria-label="add to favorites">
-          <FavoriteIcon />
+          <FavoriteIcon color="primary" />
         </IconButton>
+        {rating}
         <IconButton aria-label="share">
           <EditIcon />
         </IconButton>

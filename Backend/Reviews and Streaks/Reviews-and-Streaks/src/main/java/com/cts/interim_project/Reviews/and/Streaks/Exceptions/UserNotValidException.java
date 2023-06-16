@@ -1,4 +1,4 @@
-package com.cts.interim_project.Reviews.and.Streaks.exception;
+package com.cts.interim_project.Reviews.and.Streaks.Exceptions;
 
 public class UserNotValidException extends RuntimeException {
 	private static final long serialVersionUID = 559627242079357995L;

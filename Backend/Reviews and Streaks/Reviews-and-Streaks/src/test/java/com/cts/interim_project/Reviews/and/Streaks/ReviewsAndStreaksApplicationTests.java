@@ -8,6 +8,7 @@ class ReviewsAndStreaksApplicationTests {
 
 	@Test
 	void contextLoads() {
+		
 	}
 
 }

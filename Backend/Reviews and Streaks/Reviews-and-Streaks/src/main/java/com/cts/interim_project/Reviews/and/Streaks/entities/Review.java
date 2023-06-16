@@ -6,6 +6,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.validation.constraints.Max;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -24,6 +25,7 @@ public class Review {
 	private String userId;
 	@Column(length = 500)
 	private String review;
+	@Max(value = 5)
 	private Integer rating;
 
 	public Review(String serviceProviderId, String userId, String review, Integer rating) {
