@@ -1,15 +1,20 @@
+import { useEffect, useState } from "react";
 import { VendorContextProvider } from "../../../context/VendorContext";
-import DrawerAppBar from "../../Shared/Navbar";
+import Navbar from "../../Shared/Navbar";
 import DataGrid from "./DataGrid";
 import FilterRow from "./FilterRow";
 const UserHome = () => {
+  const [filter, setFilter] = useState("");
+  useEffect(() => {
+    console.log("filter: ", filter);
+  }, [filter]);
   return (
-    <DrawerAppBar>
-      <FilterRow />
+    <Navbar>
+      <FilterRow filter={filter} setFilter={setFilter} />
       <VendorContextProvider>
-        <DataGrid />
+        <DataGrid filter={filter} />
       </VendorContextProvider>
-    </DrawerAppBar>
+    </Navbar>
   );
 };
 

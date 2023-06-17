@@ -5,7 +5,7 @@ import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 
-function DrawerAppBar(props) {
+function Navbar(props) {
   return (
     <Box sx={{ display: "flex" }}>
       <AppBar component="nav">
@@ -33,4 +33,4 @@ function DrawerAppBar(props) {
   );
 }
 
-export default DrawerAppBar;
+export default Navbar;
