@@ -1,8 +1,9 @@
 {
 	"info": {
-		"_postman_id": "a759af26-7905-43b8-a5d4-8f00b00759e6",
+		"_postman_id": "5fe4a71d-8879-4fc9-9143-b5faf3c22fdb",
 		"name": "Review Service",
-		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "13871700"
 	},
 	"item": [
 		{
@@ -12,13 +13,13 @@
 				"header": [
 					{
 						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJzb3VtYWx5YTZAZ21haWwuY29tIiwiaWF0IjoxNjg0MjM4MzMwLCJleHAiOjE2ODQyNDE5MzB9.gHDCutqou2RhdcGqaoLI1CH_bu4tiRKbrHbw817hb6s",
+						"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJiaWt1MTk2NEBnbWFpbC5jb20iLCJpYXQiOjE2ODcxMTQwNjMsImV4cCI6MTY4NzExNzY2M30.G0yQ0wSFiFLPq_Lie6U1ytCIxYPR1kC-UGsVNioujZM",
 						"type": "default"
 					}
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"serviceProviderId\": \"779dbab0-56a9-4d81-9130-1274515c61a4\",\r\n    \"review\": \"good\",\r\n    \"rating\": 4\r\n}",
+					"raw": "{\r\n    \"serviceProviderId\": \"cc74e612-c8a4-46a4-931a-e09d961d7343\",\r\n    \"review\": \"terrible\",\r\n    \"rating\": 1\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -131,6 +132,46 @@
 					"path": [
 						"user",
 						"get"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get average rating of a vendor",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{review_service}}/provider/get/avg-rating/cc74e612-c8a4-46a4-931a-e09d961d7343",
+					"host": [
+						"{{review_service}}"
+					],
+					"path": [
+						"provider",
+						"get",
+						"avg-rating",
+						"cc74e612-c8a4-46a4-931a-e09d961d7343"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Stats about rating of a vendor",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{review_service}}/provider/get/rating-stats/cc74e612-c8a4-46a4-931a-e09d961d7343",
+					"host": [
+						"{{review_service}}"
+					],
+					"path": [
+						"provider",
+						"get",
+						"rating-stats",
+						"cc74e612-c8a4-46a4-931a-e09d961d7343"
 					]
 				}
 			},
