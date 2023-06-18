@@ -4,6 +4,7 @@ import Box from "@mui/material/Box";
 import IconButton from "@mui/material/IconButton";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
+import { Link } from "react-router-dom";
 
 function Navbar(props) {
   return (
@@ -16,7 +17,9 @@ function Navbar(props) {
             sx={{ flexGrow: 1 }}
             color="primary"
           >
-            Les.ur'ly
+            <Link to="/" style={{ textDecoration: "none", color: "#ecc829" }}>
+              Les.ur'ly
+            </Link>
           </Typography>
           <Box>
             <IconButton>

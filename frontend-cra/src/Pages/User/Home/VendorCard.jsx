@@ -7,10 +7,13 @@ import CardHeader from "@mui/material/CardHeader";
 import CardMedia from "@mui/material/CardMedia";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import { useEffect, useState } from "react";
 import axios from "axios";
+import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 const VendorCard = ({ title, address, id, image, description }) => {
   const [rating, setRating] = useState("");
+  const [titlePhoto, setTitlePhoto] = useState("");
+  const baseUrl = "http://localhost:5000";
   useEffect(() => {
     async function fetchRating() {
       const url = "http://localhost:5000/reviews/provider/get/avg-rating/";
@@ -22,32 +25,46 @@ const VendorCard = ({ title, address, id, image, description }) => {
         setRating(0.0);
       }
     }
+    async function fetchImages() {
+      const url = "http://localhost:5000/vendors/get-all-images/";
+      try {
+        const imageLinkArray = await axios.get(url + id);
+        console.log("Image data: ", imageLinkArray.data);
+        setTitlePhoto(baseUrl + imageLinkArray.data[0]);
+      } catch (error) {
+        console.error("Error occoured while fetching imageArrray: ", error);
+        setTitlePhoto("");
+      }
+    }
     fetchRating();
+    fetchImages();
   }, [id]);
   return (
-    <Card sx={{ maxWidth: 345 }}>
-      <CardMedia
-        component="img"
-        height="194"
-        image={image}
-        alt={title + "_image"}
-      />
-      <CardHeader title={title} subheader={address} />
-      <CardContent>
-        <Typography variant="body2" color="text.secondary">
-          {description}
-        </Typography>
-      </CardContent>
-      <CardActions>
-        <IconButton aria-label="add to favorites">
-          <FavoriteIcon color="primary" />
-        </IconButton>
-        {rating}
-        <IconButton aria-label="share">
-          <EditIcon />
-        </IconButton>
-      </CardActions>
-    </Card>
+    <Link to={`/vendor/${id}`} style={{ textDecoration: "none" }}>
+      <Card sx={{ maxWidth: 345 }}>
+        <CardMedia
+          component="img"
+          height="194"
+          image={titlePhoto}
+          alt={title + "_image"}
+        />
+        <CardHeader title={title} subheader={address} />
+        <CardContent>
+          <Typography variant="body2" color="text.secondary">
+            {description}
+          </Typography>
+        </CardContent>
+        <CardActions>
+          <IconButton aria-label="add to favorites">
+            <FavoriteIcon color="primary" />
+          </IconButton>
+          {rating}
+          <IconButton aria-label="share">
+            <EditIcon />
+          </IconButton>
+        </CardActions>
+      </Card>
+    </Link>
   );
 };
 

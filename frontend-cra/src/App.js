@@ -8,10 +8,16 @@ import { CssBaseline } from "@mui/material";
 import theme from "./themes/defaultTheme";
 import UserHome from "./Pages/User/Home/UserHome";
 import ErrorPage from "./Pages/Shared/ErrorPage";
+import VendorDetails from "./Pages/User/VendorDetails/VendorDetails";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <UserHome />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/vendor/:id",
+    element: <VendorDetails />,
     errorElement: <ErrorPage />,
   },
 ]);

@@ -3,8 +3,8 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import image from "../../../images/hotel.jpg";
-import VendorCard from "./VendorCard";
 import LoadingAnimation from "../../Shared/LoadingAnimation";
+import VendorCard from "./VendorCard";
 const DataGrid = ({ filter }) => {
   const [data, setData] = useState([]);
   useEffect(() => {
