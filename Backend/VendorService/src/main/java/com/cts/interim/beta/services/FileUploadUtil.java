@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -54,9 +55,14 @@ public class FileUploadUtil {
 		List<URI> listOfImages = new ArrayList<>();
 		for (String image : contents) {
 			String dynamicPart = vendorId + "/" + image;
-			URI location = ServletUriComponentsBuilder.fromCurrentContextPath().path("/vendors/images/{dynamicPart}")
-					.buildAndExpand(dynamicPart).toUri();
-			listOfImages.add(location);
+			URI location;
+			try {
+				location = new URI("/vendors/images/"+dynamicPart);
+				listOfImages.add(location);
+			} catch (URISyntaxException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 		return listOfImages;
 	}

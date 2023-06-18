@@ -173,12 +173,12 @@ public class VendorService {
 	public List<URI> getAllPhotos(String vendorId) {
 		ServiceProvider vendor = findProviderById(vendorId);
 		if (vendor != null) {
-			List<URI> allImages = fileUploadUtil.getAllPhotos(vendor.getPlaceType(), vendorId);
-			log.error("All images: {}", allImages);
-			if (allImages == null) {
-				throw new ResourceNotFoundException("All the images requested for was not found in the server");
-			} else {
+			try {
+				List<URI> allImages = fileUploadUtil.getAllPhotos(vendor.getPlaceType(), vendorId);
+				log.error("All images: {}", allImages);
 				return allImages;
+			}catch(NullPointerException ex) {
+				throw new ResourceNotFoundException("All the images requested for was not found in the server");
 			}
 		} else {
 			throw new UserNotValidException("user does not exist", new Throwable("user with given id does not exist"));
