@@ -1,6 +1,8 @@
 package com.cts.interim_project.Reviews.and.Streaks.services;
 
 import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -89,7 +91,26 @@ public class ReviewService {
 		}
 
 	}
+	private List<RatingStats> addMissingStats(List<RatingStats> ratingStatsList){
+		List<RatingStats> updatedList = new ArrayList<>();
+        Map<Integer, RatingStats> ratingMap = new HashMap<>();
 
+        for (RatingStats ratingStats : ratingStatsList) {
+            ratingMap.put(ratingStats.getRating(), ratingStats);
+        }
+
+        for (int i = 1; i <= 5; i++) {
+            RatingStats ratingStats = ratingMap.get(i);
+            if (ratingStats != null) {
+                updatedList.add(ratingStats);
+            } else {
+                updatedList.add(new RatingStats(i, 0L));
+            }
+        }
+        updatedList.sort(Comparator.comparingInt(RatingStats::getRating));
+        return updatedList;
+    }
+	
 	public List<RatingStats> getRatingStatsOfServiceProvider(String providerId) {
 		Boolean isVendorValid = isVendorValid(providerId);
 		if (isVendorValid) {
@@ -105,6 +126,7 @@ public class ReviewService {
 		// this code finds missing rating values and adds (rating,0) to them
 		// like if a stats contain ((2,10),(4,6)) it will convert to
 		// ((1,0),(2,10),(3,0),(4,6),(5,0))
+		st = addMissingStats(st);
 		return st;
 		} else {
 			throw new ProviderNotFoundException("service provider with gived id is not found");
