@@ -3,6 +3,7 @@ import Grid from "@mui/material/Unstable_Grid2/Grid2";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import FavoriteIcon from "@mui/icons-material/Favorite";
+import OtherDetails from "./OtherDetails";
 function DetailViewer({ id }) {
   const [detail, setDetail] = useState("");
   const [ratingStats, setRatingStats] = useState("");
@@ -55,7 +56,7 @@ function DetailViewer({ id }) {
         </Typography>
         <Typography variant="subtitle1">{detail.address}</Typography>
       </Grid>
-      <Grid container xs={12} sx={{ border: "solid red 1px" }}>
+      <Grid container xs={12}>
         <Grid container xs={6} spacing={1}>
           {ratingStats ? (
             ratingStats.map((stat) => (
@@ -90,11 +91,7 @@ function DetailViewer({ id }) {
             </Grid>
           )}
         </Grid>
-        <Grid
-          container
-          xs={6}
-          sx={{ border: "solid green 1px", textAlign: "center" }}
-        >
+        <Grid container xs={6} sx={{ textAlign: "center" }}>
           <Button
             variant="contained"
             color="primary"
@@ -104,6 +101,9 @@ function DetailViewer({ id }) {
             <Typography variant="h5">Write a review</Typography>
           </Button>
         </Grid>
+      </Grid>
+      <Grid container xs={12} maxWidh="sm">
+        <OtherDetails details={detail} />
       </Grid>
     </Grid>
   );
