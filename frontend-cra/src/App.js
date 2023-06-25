@@ -9,6 +9,8 @@ import theme from "./themes/defaultTheme";
 import UserHome from "./Pages/User/Home/UserHome";
 import ErrorPage from "./Pages/Shared/ErrorPage";
 import VendorDetails from "./Pages/User/VendorDetails/VendorDetails";
+import Login from "./Pages/Shared/Login";
+import SignUp from "./Pages/Shared/Signup";
 const router = createBrowserRouter([
   {
     path: "/",
@@ -18,6 +20,16 @@ const router = createBrowserRouter([
   {
     path: "/vendor/:id",
     element: <VendorDetails />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+    errorElement: <ErrorPage />,
+  },
+  {
+    path: "/singup",
+    element: <SignUp />,
     errorElement: <ErrorPage />,
   },
 ]);

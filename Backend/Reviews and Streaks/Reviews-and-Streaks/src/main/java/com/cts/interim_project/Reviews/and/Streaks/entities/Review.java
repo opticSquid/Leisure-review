@@ -15,6 +15,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+
 public class Review {
 	@Id
 	@GeneratedValue(strategy = GenerationType.UUID)
@@ -22,6 +23,7 @@ public class Review {
 	@Nonnull
 	private String serviceProviderId;
 	@Nonnull
+	@Column(unique = true)
 	private String userId;
 	@Column(length = 500)
 	private String review;

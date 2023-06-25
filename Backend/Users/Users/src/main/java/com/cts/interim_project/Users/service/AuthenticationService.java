@@ -1,6 +1,7 @@
 package com.cts.interim_project.Users.service;
 
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import com.cts.interim_project.Users.controller.dto.ValidateRequest;
 import com.cts.interim_project.Users.controller.dto.ValidateResponse;
 import com.cts.interim_project.Users.entity.Role;
 import com.cts.interim_project.Users.entity.User;
+import com.cts.interim_project.Users.exceptions.EmailOrPasswordWrong;
 import com.cts.interim_project.Users.exceptions.JwtNotValidException;
 import com.cts.interim_project.Users.exceptions.UserNotFoundException;
 import com.cts.interim_project.Users.repository.UserRepo;
@@ -50,8 +52,12 @@ public class AuthenticationService {
 	}
 
 	public AuthenticationResponse authenticate(AuthenticationRequest request) {
-		authenticationManager
-				.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+		try {
+			authenticationManager
+			.authenticate(new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+		}catch(BadCredentialsException ex) {
+			throw new EmailOrPasswordWrong("email or password is wrong");
+		}
 		User user = repo.findByEmail(request.getEmail())
 				.orElseThrow(() -> new UserNotFoundException("user with given email not found"));
 		String jwtToken = jwtService.generateToken(user);

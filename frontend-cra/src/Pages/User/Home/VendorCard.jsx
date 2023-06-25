@@ -45,7 +45,7 @@ const VendorCard = ({ title, address, id, image, description }) => {
         <CardMedia
           component="img"
           height="194"
-          sx={{objectFit: "contain"}}
+          sx={{ objectFit: "contain" }}
           image={titlePhoto}
           alt={title + "_image"}
         />
@@ -59,7 +59,7 @@ const VendorCard = ({ title, address, id, image, description }) => {
           <IconButton aria-label="add to favorites">
             <FavoriteIcon color="primary" />
           </IconButton>
-          {rating}
+          {rating.toFixed(1)}
           <IconButton aria-label="share">
             <EditIcon />
           </IconButton>

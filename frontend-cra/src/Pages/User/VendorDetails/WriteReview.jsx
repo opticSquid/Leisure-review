@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useState, useEffect, Fragment } from "react";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
-import { TextField, Slider, Button } from "@mui/material";
+import { TextField, Slider, Button, Snackbar, IconButton } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import Grid from "@mui/material/Unstable_Grid2/Grid2";
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const style = {
   position: "absolute",
   top: "50%",
@@ -42,50 +46,124 @@ function WriteReview({ vendorId, writeReviewopen, handleClose }) {
     review: "",
     rating: 0,
   });
+  const [reviewAdded, setReviewAdded] = useState(false);
+  const navigate = useNavigate();
+  const [token, setToken] = useState("");
+  useEffect(() => {
+    const token = Cookies.get("jwtToken");
+    if (token) {
+      setToken(token);
+    }
+  }, []);
   const handleChange = (event) => {
     setReview({ ...review, [event.target.name]: event.target.value });
   };
+  const handleSubmit = async (event) => {
+    try {
+      event.preventDefault();
+      if (!token) {
+        navigate("/login");
+      } else {
+        let rev = review;
+        rev.rating /= 20;
+        let config = {
+          method: "post",
+          maxBodyLength: Infinity,
+          url: "http://localhost:5000/reviews/new",
+          headers: {
+            Authorization: "Bearer " + token,
+            "Content-Type": "application/json",
+          },
+          data: rev,
+        };
+        const addReviewRequest = await axios.request(config);
+        if (addReviewRequest.status === 201) {
+          setReviewAdded(true);
+          handleClose();
+        }
+      }
+    } catch (err) {
+      alert("Something went wrong plase try again");
+      console.error("could not add review: ", err);
+    }
+  };
+  const handleReviewClose = (event, reason) => {
+    if (reason === "clickaway") {
+      return;
+    }
+
+    setReviewAdded(false);
+  };
+  const action = (
+    <Fragment>
+      <Button color="secondary" size="small" onClick={handleClose}>
+        UNDO
+      </Button>
+      <IconButton
+        size="small"
+        aria-label="close"
+        color="inherit"
+        onClick={handleClose}
+      >
+        <CloseIcon fontSize="small" />
+      </IconButton>
+    </Fragment>
+  );
   return (
-    <Modal
-      open={writeReviewopen}
-      onClose={handleClose}
-      aria-labelledby="Write a Review"
-      aria-describedby="Here user writes a review"
-    >
-      <Grid container maxWidth="sm" sx={style}>
-        <Grid xs={12}>
-          <Typography id="modal-modal-title" variant="h6">
-            Your review is always helpful to us
-          </Typography>
+    <Fragment>
+      <Modal
+        open={writeReviewopen}
+        onClose={handleClose}
+        aria-labelledby="Write a Review"
+        aria-describedby="Here user writes a review"
+      >
+        <Grid container maxWidth="sm" sx={style}>
+          <Grid xs={12}>
+            <Typography id="modal-modal-title" variant="h6">
+              Your review is always helpful to us
+            </Typography>
+          </Grid>
+          <Grid xs={12}>
+            <Slider
+              value={review.rating}
+              name="rating"
+              onChange={handleChange}
+              step={20}
+              marks={marks}
+              valueLabelDisplay="off"
+            />
+          </Grid>
+          <Grid xs={12}>
+            <TextField
+              id="filled-basic"
+              name="review"
+              value={review.review}
+              onChange={handleChange}
+              label="Your Review"
+              variant="filled"
+              sx={{ width: "100%" }}
+            />
+          </Grid>
+          <Grid xs={12} sx={{ mt: 1, textAlign: "center" }}>
+            <Button
+              color="primary"
+              variant="contained"
+              type="submit"
+              onClick={handleSubmit}
+            >
+              submit
+            </Button>
+          </Grid>
         </Grid>
-        <Grid xs={12}>
-          <Slider
-            value={review.rating}
-            name="rating"
-            onChange={handleChange}
-            step={20}
-            marks={marks}
-            valueLabelDisplay="off"
-          />
-        </Grid>
-        <Grid xs={12}>
-          <TextField
-            id="filled-basic"
-            name="review"
-            value={review.review}
-            onChange={handleChange}
-            label="Your Review"
-            variant="filled"
-            sx={{ width: "100%" }}
-          />
-        </Grid>
-        <Grid xs={12} sx={{ mt: 1, textAlign: "center" }}>
-          <Button color="primary" variant="contained" type="submit">
-            submit
-          </Button>
-        </Grid>
-      </Grid>
-    </Modal>
+      </Modal>
+      <Snackbar
+        open={reviewAdded}
+        autoHideDuration={3000}
+        onClose={handleReviewClose}
+        message="Review Added"
+        action={action}
+      />
+    </Fragment>
   );
 }
 
